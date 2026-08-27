@@ -1,0 +1,42 @@
+﻿# BEGIN CSA
+
+Host companyrouter isprouter red homerouter web database dns employee remote-employee
+    User vagrant
+    IdentityFile ~/.ssh/csa_ed25519
+    IdentitiesOnly yes
+    StrictHostKeyChecking accept-new
+    ServerAliveInterval 30
+
+Host companyrouter
+    HostName 192.168.62.253
+
+Host isprouter
+    HostName 192.168.62.254
+
+Host red
+    HostName 192.168.62.10
+
+Host homerouter
+    HostName 192.168.62.42
+
+Host web
+    HostName 172.30.0.10
+    ProxyJump companyrouter
+
+Host database
+    HostName 172.30.0.15
+    ProxyJump companyrouter
+
+Host dns
+    HostName 172.30.0.4
+    ProxyJump companyrouter
+
+Host employee
+    HostName 172.30.0.123
+    ProxyJump companyrouter
+
+Host remote-employee
+    HostName 172.10.10.123
+    ProxyJump homerouter
+
+# END CSA
