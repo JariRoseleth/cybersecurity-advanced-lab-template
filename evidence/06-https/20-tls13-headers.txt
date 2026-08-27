@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Date: Thu, 27 Aug 2026 20:26:05 GMT
+Server: Apache/2.4.62 (AlmaLinux) OpenSSL/3.5.5
+Last-Modified: Thu, 27 Aug 2026 12:29:52 GMT
+ETag: "58f-65a067e20db71"
+Accept-Ranges: bytes
+Content-Length: 1423
+Content-Type: text/html; charset=UTF-8
+

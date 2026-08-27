@@ -11,3 +11,7 @@
 
 # VirtualBox appliances
 *.ova
+# CSA Lab 6: nooit private sleutels of TLS-sessiegeheimen committen
+evidence/06-https/private/
+*.keylog
+sslkeys.log

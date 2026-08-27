@@ -1,0 +1,38 @@
+
+### verify-tls12-rsa (employee)
+=== TLS 1.2 STATIC RSA HANDSHAKE ===
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.2
+Ciphersuite: AES256-SHA
+Peer certificate: C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+Verification: OK
+DONE
+
+=== HTTPS HEADERS ===
+HTTP/1.1 200 OK
+Date: Thu, 27 Aug 2026 20:15:22 GMT
+Server: Apache/2.4.62 (AlmaLinux) OpenSSL/3.5.5
+Last-Modified: Thu, 27 Aug 2026 12:29:52 GMT
+ETag: "58f-65a067e20db71"
+Accept-Ranges: bytes
+Content-Length: 1423
+Content-Type: text/html; charset=UTF-8
+
+### verify-tls12-rsa (employee)
+=== TLS 1.2 STATIC RSA HANDSHAKE ===
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.2
+Ciphersuite: AES256-SHA
+Peer certificate: C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+Verification: OK
+DONE
+
+=== HTTPS HEADERS ===
+HTTP/1.1 200 OK
+Date: Thu, 27 Aug 2026 20:25:45 GMT
+Server: Apache/2.4.62 (AlmaLinux) OpenSSL/3.5.5
+Last-Modified: Thu, 27 Aug 2026 12:29:52 GMT
+ETag: "58f-65a067e20db71"
+Accept-Ranges: bytes
+Content-Length: 1423
+Content-Type: text/html; charset=UTF-8

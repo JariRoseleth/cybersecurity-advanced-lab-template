@@ -1,0 +1,33 @@
+CSA LAB 6 CLOCK SYNCHRONIZATION
+Host UTC before sync: 2026-08-27T20:25:15.416Z
+
+### synchronize-utc-clock (isprouter)
+Node: isprouter
+UTC before: 2026-08-27T20:25:14Z (epoch 1787862314)
+UTC after : 2026-08-27T20:25:15Z (epoch 1787862315)
+
+### synchronize-utc-clock (companyrouter)
+Node: companyrouter
+UTC before: 2026-08-27T20:25:16Z (epoch 1787862316)
+UTC after : 2026-08-27T20:25:15Z (epoch 1787862315)
+
+### synchronize-utc-clock (dns)
+Node: dns
+UTC before: 2026-08-27T20:25:16Z (epoch 1787862316)
+UTC after : 2026-08-27T20:25:16Z (epoch 1787862316)
+
+### synchronize-utc-clock (employee)
+Node: employee
+UTC before: 2026-08-27T20:25:18Z (epoch 1787862318)
+UTC after : 2026-08-27T20:25:17Z (epoch 1787862317)
+
+### synchronize-utc-clock (web)
+Node: web
+UTC before: 2026-08-27T20:25:19Z (epoch 1787862319)
+UTC after : 2026-08-27T20:25:19Z (epoch 1787862319)
+Host UTC after sync: 2026-08-27T20:25:20.824Z
+
+### synchronize-utc-clock-browser-vm (red)
+Node: red
+UTC before: 2026-08-27T20:25:39Z (epoch 1787862339)
+UTC after : 2026-08-27T20:25:39Z (epoch 1787862339)

@@ -3,58 +3,60 @@
 flush ruleset
 
 table inet csa_firewall {
+    chain prerouting {
+        type nat hook prerouting priority dstnat; policy accept;
+
+        # Expose Cowrie as SSH/22 only for traffic addressed to companyrouter.
+        # The mark lets the input chain distinguish redirected port 22 from a
+        # direct connection to Cowrie's private listener on port 2223.
+        iifname "eth1" ip daddr 192.168.62.253 tcp dport 22 meta mark set 0x4 redirect to :2223
+    }
 
     chain input {
-        type filter hook input priority 0;
-        policy drop;
+        type filter hook input priority filter; policy drop;
 
-        # Verwijder ongeldige pakketten.
         ct state invalid drop
-
-        # Behoud bestaande verbindingen, waaronder de actieve SSH-sessie.
         ct state established,related accept
-
-        # Lokale processen mogen via loopback communiceren.
         iifname "lo" accept
 
-        # De Windows-host en isprouter mogen companyrouter pingen.
+        # ICMP used for diagnostics.
         iifname "eth1" ip saddr { 192.168.62.1, 192.168.62.254 } ip protocol icmp accept
-
-        # Interne machines mogen de router pingen.
         iifname "eth2" ip protocol icmp accept
 
-        # Alleen de Windows-host en isprouter mogen extern via SSH beheren.
-        iifname "eth1" ip saddr { 192.168.62.1, 192.168.62.254 } tcp dport 22 accept
+        # Real management SSH was moved away from the honeypot port.
+        iifname "eth1" ip saddr { 192.168.62.1, 192.168.62.254 } tcp dport 2222 accept
+        iifname "eth2" tcp dport 2222 accept
 
-        # Interne beheertoegang tot de router blijft toegestaan.
-        iifname "eth2" tcp dport 22 accept
+        # Only packets redirected from public SSH/22 may reach Cowrie/2223.
+        iifname "eth1" meta mark 0x4 tcp dport 2223 accept
 
-        # Tel verkeer dat uiteindelijk door de default policy wordt gedropt.
         counter
     }
 
     chain forward {
-        type filter hook forward priority 0;
-        policy drop;
+        type filter hook forward priority filter; policy drop;
 
         ct state invalid drop
         ct state established,related accept
 
-        # Bedrijfsmachines mogen naar fake internet en echt internet.
+        # Internal clients may initiate connections towards the fake internet.
         iifname "eth2" oifname "eth1" accept
 
-        # isprouter mag de interne machines via SSH beheren voor Ansible.
+        # ISP router may administer internal hosts over their real SSH/22.
+        # The destination restriction in prerouting prevents honeypot capture.
         iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 tcp dport 22 accept
 
-        # Vanaf fake internet is alleen de publieke website bereikbaar.
-        iifname "eth1" oifname "eth2" ip daddr 172.30.0.10 tcp dport 80 accept
+        # isprouter mag de interne autoritatieve DNS-server raadplegen.
+        iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 udp dport 53 accept
+        iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 tcp dport 53 accept
 
-        # Alle overige forwarding wordt door de default policy gedropt.
+        # Publish the internal web server.
+        iifname "eth1" oifname "eth2" ip daddr 172.30.0.10 tcp dport { 80, 443 } accept
+
         counter
     }
 
     chain output {
-        type filter hook output priority 0;
-        policy accept;
+        type filter hook output priority filter; policy accept;
     }
 }

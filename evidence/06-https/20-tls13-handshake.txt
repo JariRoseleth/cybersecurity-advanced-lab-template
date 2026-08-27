@@ -1,0 +1,32 @@
+
+### verify-final-tls13 (employee)
+=== TLS 1.3 HANDSHAKE ===
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.3
+Ciphersuite: TLS_AES_256_GCM_SHA384
+Peer certificate: C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+Hash used: SHA256
+Signature type: RSA-PSS
+Verification: OK
+Server Temp Key: X25519, 253 bits
+DONE
+
+=== TLS 1.2 SHOULD NOW FAIL ===
+482BB5EFA27F0000:error:0A00042E:SSL routines:ssl3_read_bytes:tlsv1 alert protocol version:ssl/record/rec_layer_s3.c:1586:SSL alert number 70
+Verwacht resultaat: TLS 1.2 geweigerd (exitcode 1).
+
+### verify-final-tls13 (employee)
+=== TLS 1.3 HANDSHAKE ===
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.3
+Ciphersuite: TLS_AES_256_GCM_SHA384
+Peer certificate: C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+Hash used: SHA256
+Signature type: RSA-PSS
+Verification: OK
+Server Temp Key: X25519, 253 bits
+DONE
+
+=== TLS 1.2 SHOULD NOW FAIL ===
+485B55B5097F0000:error:0A00042E:SSL routines:ssl3_read_bytes:tlsv1 alert protocol version:ssl/record/rec_layer_s3.c:1586:SSL alert number 70
+Verwacht resultaat: TLS 1.2 geweigerd (exitcode 1).

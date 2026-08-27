@@ -1,6 +1,6 @@
 $TTL 86400
 @       IN SOA  dns.cybersec.internal. admin.cybersec.internal. (
-                2023092301 ; serial
+                2026082705 ; serial
                 3600       ; refresh (1 hour)
                 1800       ; retry (30 minutes)
                 1209600    ; expire (2 weeks)
@@ -10,9 +10,11 @@ $TTL 86400
 
 dns     IN A    172.30.0.4
 www     IN A    172.30.0.10
+@        IN A    172.30.0.10
+services IN A    172.30.0.10
 
 txt.at  IN TXT  "Greetings from CSA team!"
 
 ; PTR records (reverse mapping)
-172.30.0.4.in-addr.arpa.   IN PTR dns.cybersec.internal.
-172.30.0.10.in-addr.arpa.  IN PTR www.cybersec.internal.
+; 172.30.0.4.in-addr.arpa.   IN PTR dns.cybersec.internal.
+; 172.30.0.10.in-addr.arpa.  IN PTR www.cybersec.internal.

@@ -1,0 +1,512 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260827222502
+Username: LAPTOP-IQA85N17\jarir
+RunAs User: LAPTOP-IQA85N17\jarir
+Configuration Name: 
+Machine: LAPTOP-IQA85N17 (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\jarir\AppData\Local\Programs\Microsoft VS Code\110a328ea5\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 22548
+PSVersion: 5.1.22621.6133
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.22621.6133
+BuildVersion: 10.0.22621.6133
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+
+========================================================================
+CSA LAB 6 - CA, HTTPS, TLS 1.2/1.3 EN WIRESHARK-BEWIJS
+========================================================================
+Script     : 2.3-vm-clock-skew-fix
+Repository : C:\dev\cybersecurity-advanced-lab-template
+Evidence   : C:\dev\cybersecurity-advanced-lab-template\evidence\06-https
+Privéfiles : C:\Users\jarir\CSA-Lab6-Private
+
+========================================================================
+1. Repositorybestanden voorbereiden
+========================================================================
+DNS-records cybersec.internal en services.cybersec.internal toegevoegd; serial = 2026082705
+
+========================================================================
+2. Bereikbaarheid van de vereiste nodes controleren
+========================================================================
+[RUN] Vagrant-status
+
+[RUN] SSH naar isprouter
+
+[RUN] SSH naar companyrouter
+
+[RUN] SSH naar dns
+
+[RUN] SSH naar web
+
+[RUN] SSH naar employee
+
+
+========================================================================
+2b. VM-klokken synchroniseren voor PKI-validiteit
+========================================================================
+[RUN] Kopieer isprouter-synchronize-utc-clock.sh naar isprouter
+
+[RUN] synchronize-utc-clock op isprouter
+Node: isprouter
+UTC before: 2026-08-27T20:25:14Z (epoch 1787862314)
+UTC after : 2026-08-27T20:25:15Z (epoch 1787862315)
+[RUN] Kopieer companyrouter-synchronize-utc-clock.sh naar companyrouter
+
+[RUN] synchronize-utc-clock op companyrouter
+Node: companyrouter
+UTC before: 2026-08-27T20:25:16Z (epoch 1787862316)
+UTC after : 2026-08-27T20:25:15Z (epoch 1787862315)
+[RUN] Kopieer dns-synchronize-utc-clock.sh naar dns
+
+[RUN] synchronize-utc-clock op dns
+Node: dns
+UTC before: 2026-08-27T20:25:16Z (epoch 1787862316)
+UTC after : 2026-08-27T20:25:16Z (epoch 1787862316)
+[RUN] Kopieer employee-synchronize-utc-clock.sh naar employee
+
+[RUN] synchronize-utc-clock op employee
+Node: employee
+UTC before: 2026-08-27T20:25:18Z (epoch 1787862318)
+UTC after : 2026-08-27T20:25:17Z (epoch 1787862317)
+[RUN] Kopieer web-synchronize-utc-clock.sh naar web
+
+[RUN] synchronize-utc-clock op web
+Node: web
+UTC before: 2026-08-27T20:25:19Z (epoch 1787862319)
+UTC after : 2026-08-27T20:25:19Z (epoch 1787862319)
+
+========================================================================
+3. Root-CA aanmaken op isprouter
+========================================================================
+[RUN] Kopieer isprouter-create-root-ca.sh naar isprouter
+
+[RUN] create-root-ca op isprouter
+CA key/certificate public-key hash: 937ba83b32f59a0f1ab95b3ab28026bea7cef36c1f0d02548b81f9b9e724c4d7
+subject=C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = CSA Lab Root CA
+issuer=C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = CSA Lab Root CA
+serial=48682792E52EB4316E084184FB29A749CA52F4AD
+notBefore=Aug 27 20:02:29 2026 GMT
+notAfter=Aug 24 20:02:29 2036 GMT
+sha256 Fingerprint=56:95:98:D9:20:07:A1:17:C6:1E:98:FA:0B:81:80:86:56:01:5C:08:B6:27:1E:3A:3A:03:10:9B:31:FF:D6:02
+[RUN] Kopieer csa-lab-root-ca.crt van isprouter
+
+
+========================================================================
+4. Webserver-key en CSR op web aanmaken
+========================================================================
+[RUN] Kopieer webserver.cnf naar web
+
+[RUN] Kopieer web-create-web-csr.sh naar web
+
+[RUN] create-web-csr op web
+Certificate request self-signature verify OK
+subject=C=BE, ST=Oost-Vlaanderen, L=Aalst, O=CSA Lab, OU=Lab 6, CN=cybersec.internal
+                X509v3 Subject Alternative Name:
+                    DNS:cybersec.internal, DNS:www.cybersec.internal, DNS:services.cybersec.internal, IP Address:172.30.0.10
+[RUN] Kopieer csa-webserver.csr van web
+
+
+========================================================================
+5. CSR door de CA laten ondertekenen
+========================================================================
+[RUN] Kopieer csa-webserver.csr naar isprouter
+
+[RUN] Kopieer webserver.cnf naar isprouter
+
+[RUN] Kopieer isprouter-sign-web-certificate.sh naar isprouter
+
+[RUN] sign-web-certificate op isprouter
+CA signer UTC: 2026-08-27T20:25:26Z (epoch 1787862326)
+Bestaand, geldig servercertificaat hergebruikt; geen nieuwe notBefore-tijd aangemaakt.
+/etc/csa-ca/certs/csa-webserver.crt: OK
+Hostname www.cybersec.internal does match certificate
+Hostname services.cybersec.internal does match certificate
+IP 172.30.0.10 does match certificate
+subject=C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+issuer=C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = CSA Lab Root CA
+serial=6BECBDEFCC31AFA4336E54AD99CBE2F95057E335
+notBefore=Aug 27 20:02:35 2026 GMT
+notAfter=Nov 29 20:02:35 2028 GMT
+sha256 Fingerprint=6F:BF:7E:B0:70:B8:25:B9:02:11:77:91:A1:19:8D:8D:7F:40:A9:D4:F1:98:CF:CB:1E:E0:69:F4:B0:33:2D:1C
+[RUN] Kopieer csa-webserver.crt van isprouter
+
+[RUN] Kopieer csa-lab-root-ca.crt van isprouter
+
+
+========================================================================
+6. Certificaten op web installeren
+========================================================================
+[RUN] Kopieer csa-webserver.crt naar web
+
+[RUN] Kopieer csa-lab-root-ca.crt naar web
+
+[RUN] Kopieer web-install-web-certificate.sh naar web
+
+[RUN] install-web-certificate op web
+Web UTC       : 2026-08-27T20:25:29Z (epoch 1787862329)
+CA validity   : notBefore=Aug 27 20:02:29 2026 GMT notAfter=Aug 24 20:02:29 2036 GMT
+Leaf validity : notBefore=Aug 27 20:02:35 2026 GMT notAfter=Nov 29 20:02:35 2028 GMT
+/etc/pki/tls/certs/csa-webserver.crt: OK
+Private key en servercertificaat horen bij elkaar: 69d1dd6a34d6d608cbd2973ac20066e0f3b79ebd8113efe64fef4787a2f5b527
+
+========================================================================
+7. DNS-record en firewallpoort 443 live toepassen
+========================================================================
+[RUN] Kopieer cybersec.internal naar dns
+
+[RUN] Kopieer dns-apply-dns-zone.sh naar dns
+
+[RUN] apply-dns-zone op dns
+zone cybersec.internal/IN: loaded serial 2026082705
+OK
+ * Stopping named ... [ ok ]
+ * Starting named ...
+ * Checking named configuration ... [ ok ]
+ [ ok ]
+ * status: started
+cybersec.internal.	86400	IN	A	172.30.0.10
+www.cybersec.internal.	86400	IN	A	172.30.0.10
+services.cybersec.internal. 86400 IN	A	172.30.0.10
+[RUN] Kopieer companyrouter.nft naar companyrouter
+
+[RUN] Kopieer companyrouter-apply-company-firewall.sh naar companyrouter
+
+[RUN] apply-company-firewall op companyrouter
+table inet csa_firewall {
+	chain forward {
+		type filter hook forward priority 0; policy drop;
+		ct state 0x1 drop
+		ct state 0x2,0x4 accept
+		iifname "eth2" oifname "eth1" accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 tcp dport 22 accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 udp dport 53 accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 tcp dport 53 accept
+		iifname "eth1" oifname "eth2" ip daddr 172.30.0.10 tcp dport { 80, 443 } accept
+		counter packets 0 bytes 0
+	}
+}
+		iifname "eth1" oifname "eth2" ip daddr 172.30.0.10 tcp dport { 80, 443 } accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 udp dport 53 accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 tcp dport 53 accept
+[RUN] Kopieer isprouter-refresh-unbound.sh naar isprouter
+
+[RUN] refresh-unbound op isprouter
+ * Stopping unbound daemon ... [ ok ]
+ * Checking /etc/unbound/unbound.conf ... [ ok ]
+ * Starting unbound daemon ... [ ok ]
+ * status: started
+Server:		192.168.62.254
+Address:	192.168.62.254:53
+
+Non-authoritative answer:
+Name:	cybersec.internal
+Address: 172.30.0.10
+
+Non-authoritative answer:
+
+Server:		192.168.62.254
+Address:	192.168.62.254:53
+
+Non-authoritative answer:
+Name:	www.cybersec.internal
+Address: 172.30.0.10
+
+Non-authoritative answer:
+
+Server:		192.168.62.254
+Address:	192.168.62.254:53
+
+Non-authoritative answer:
+Name:	services.cybersec.internal
+Address: 172.30.0.10
+
+Non-authoritative answer:
+
+
+========================================================================
+8. Root-CA op employee vertrouwen
+========================================================================
+[RUN] Kopieer csa-lab-root-ca.crt naar employee
+
+[RUN] Kopieer employee-trust-root-ca.sh naar employee
+
+[RUN] trust-root-ca op employee
+cybersec.internal.	86400	IN	A	172.30.0.10
+www.cybersec.internal.	86400	IN	A	172.30.0.10
+services.cybersec.internal. 86400 IN	A	172.30.0.10
+[RUN] Kopieer red-synchronize-utc-clock-browser-vm.sh naar red
+
+[RUN] synchronize-utc-clock-browser-vm op red
+Node: red
+UTC before: 2026-08-27T20:25:39Z (epoch 1787862339)
+UTC after : 2026-08-27T20:25:39Z (epoch 1787862339)
+[RUN] Kopieer csa-lab-root-ca.crt naar red
+
+[RUN] Kopieer red-trust-root-ca-browser-vm.sh naar red
+
+[RUN] trust-root-ca-browser-vm op red
+172.30.0.10     cybersec.internal
+172.30.0.10     www.cybersec.internal
+172.30.0.10     services.cybersec.internal
+Root-CA ook in de OS-truststore van red geïnstalleerd.
+
+========================================================================
+9. Bewust onveilige TLS 1.2/RSA-demonstratie
+========================================================================
+[RUN] Kopieer lab6-https-tls12.conf naar web
+
+[RUN] Kopieer web-apply-apache-tls12.sh naar web
+
+[RUN] apply-apache-tls12 op web
+[Thu Aug 27 20:25:42.419203 2026] [so:warn] [pid 9868:tid 9868] AH01574: module proxy_module is already loaded, skipping
+[Thu Aug 27 20:25:42.420711 2026] [so:warn] [pid 9868:tid 9868] AH01574: module proxy_http_module is already loaded, skipping
+Syntax OK
+LISTEN 0      511                *:80              *:*    users:(("httpd",pid=9884,fd=4),("httpd",pid=9883,fd=4),("httpd",pid=9882,fd=4),("httpd",pid=9879,fd=4))
+LISTEN 0      511                *:443             *:*    users:(("httpd",pid=9884,fd=6),("httpd",pid=9883,fd=6),("httpd",pid=9882,fd=6),("httpd",pid=9879,fd=6))
+[Thu Aug 27 20:25:43.673576 2026] [so:warn] [pid 10068:tid 10068] AH01574: module proxy_module is already loaded, skipping
+[Thu Aug 27 20:25:43.675110 2026] [so:warn] [pid 10068:tid 10068] AH01574: module proxy_http_module is already loaded, skipping
+VirtualHost configuration:
+*:443                  is a NameVirtualHost
+         default server www.cybersec.internal (/etc/httpd/conf.d/ssl.conf:6)
+         port 443 namevhost www.cybersec.internal (/etc/httpd/conf.d/ssl.conf:6)
+                 alias cybersec.internal
+         port 443 namevhost services.cybersec.internal (/etc/httpd/conf.d/ssl.conf:29)
+[RUN] Kopieer employee-verify-tls12-rsa.sh naar employee
+
+[RUN] verify-tls12-rsa op employee
+=== TLS 1.2 STATIC RSA HANDSHAKE ===
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.2
+Ciphersuite: AES256-SHA
+Peer certificate: C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+Verification: OK
+DONE
+
+=== HTTPS HEADERS ===
+HTTP/1.1 200 OK
+Date: Thu, 27 Aug 2026 20:25:45 GMT
+Server: Apache/2.4.62 (AlmaLinux) OpenSSL/3.5.5
+Last-Modified: Thu, 27 Aug 2026 12:29:52 GMT
+ETag: "58f-65a067e20db71"
+Accept-Ranges: bytes
+Content-Length: 1423
+Content-Type: text/html; charset=UTF-8
+
+[RUN] Kopieer employee-capture-tls12-rsa.sh naar employee
+
+[RUN] capture-tls12-rsa op employee
+-rw-r--r--    1 vagrant  vagrant      262 Aug 27 20:25 /tmp/lab6-tls12-headers.txt
+-rw-r--r--    1 vagrant  vagrant     6.9K Aug 27 20:25 /tmp/lab6-tls12.pcap
+[RUN] Kopieer lab6-tls12.pcap van employee
+
+[RUN] Kopieer lab6-tls12-headers.txt van employee
+
+[RUN] Kopieer web-export-web-key-for-tls12-demo.sh naar web
+
+[RUN] export-web-key-for-tls12-demo op web
+[RUN] Kopieer csa-lab6-webserver.key van web
+
+TLS 1.2-demo-key buiten Git opgeslagen: C:\Users\jarir\CSA-Lab6-Private\webserver.key
+SHA256: DACF1B52973791CBAD474CB9AC3743DDF984D9A4977B503E155134F57940EFFF
+
+========================================================================
+10. Veilige TLS 1.3-eindconfiguratie
+========================================================================
+[RUN] Kopieer lab6-https-tls13.conf naar web
+
+[RUN] Kopieer web-apply-apache-tls13.sh naar web
+
+[RUN] apply-apache-tls13 op web
+[Thu Aug 27 20:25:57.575636 2026] [so:warn] [pid 10272:tid 10272] AH01574: module proxy_module is already loaded, skipping
+[Thu Aug 27 20:25:57.577210 2026] [so:warn] [pid 10272:tid 10272] AH01574: module proxy_http_module is already loaded, skipping
+Syntax OK
+LISTEN 0      511                *:80              *:*    users:(("httpd",pid=10288,fd=4),("httpd",pid=10287,fd=4),("httpd",pid=10286,fd=4),("httpd",pid=10283,fd=4))
+LISTEN 0      511                *:443             *:*    users:(("httpd",pid=10288,fd=6),("httpd",pid=10287,fd=6),("httpd",pid=10286,fd=6),("httpd",pid=10283,fd=6))
+[Thu Aug 27 20:25:58.816808 2026] [so:warn] [pid 10472:tid 10472] AH01574: module proxy_module is already loaded, skipping
+[Thu Aug 27 20:25:58.818204 2026] [so:warn] [pid 10472:tid 10472] AH01574: module proxy_http_module is already loaded, skipping
+VirtualHost configuration:
+*:443                  is a NameVirtualHost
+         default server www.cybersec.internal (/etc/httpd/conf.d/ssl.conf:6)
+         port 443 namevhost www.cybersec.internal (/etc/httpd/conf.d/ssl.conf:6)
+                 alias cybersec.internal
+         port 443 namevhost services.cybersec.internal (/etc/httpd/conf.d/ssl.conf:28)
+[RUN] Kopieer employee-verify-final-tls13.sh naar employee
+
+[RUN] verify-final-tls13 op employee
+=== TLS 1.3 HANDSHAKE ===
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.3
+Ciphersuite: TLS_AES_256_GCM_SHA384
+Peer certificate: C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+Hash used: SHA256
+Signature type: RSA-PSS
+Verification: OK
+Server Temp Key: X25519, 253 bits
+DONE
+
+=== TLS 1.2 SHOULD NOW FAIL ===
+485B55B5097F0000:error:0A00042E:SSL routines:ssl3_read_bytes:tlsv1 alert protocol version:ssl/record/rec_layer_s3.c:1586:SSL alert number 70
+Verwacht resultaat: TLS 1.2 geweigerd (exitcode 1).
+[RUN] Kopieer employee-capture-tls13-pfs.sh naar employee
+
+[RUN] capture-tls13-pfs op employee
+-rw-r--r--    1 vagrant  vagrant      448 Aug 27 20:26 /tmp/lab6-tls13-handshake.txt
+-rw-------    1 vagrant  vagrant     1.9K Aug 27 20:26 /tmp/lab6-tls13-sslkeys.log
+-rw-r--r--    1 vagrant  vagrant    13.9K Aug 27 20:26 /tmp/lab6-tls13.pcap
+[RUN] Kopieer lab6-tls13.pcap van employee
+
+[RUN] Kopieer lab6-tls13-handshake.txt van employee
+
+[RUN] Kopieer lab6-tls13-headers.txt van employee
+
+[RUN] Kopieer lab6-tls13-sslkeys.log van employee
+
+TLS 1.3-keylog buiten Git opgeslagen: C:\Users\jarir\CSA-Lab6-Private\tls13-sslkeys.log
+SHA256: 226DAC3746ADE5FBD39E26518433A60BB7E0CE79E92C2EC5584BC02F438CBC44
+
+========================================================================
+11. Eindverificatie en Git-bewijs
+========================================================================
+[RUN] Kopieer web-final-web-verification.sh naar web
+
+[RUN] final-web-verification op web
+=== WEB: PACKAGES AND MODULES ===
+httpd-2.4.62-13.el9_8.6.x86_64
+mod_ssl-2.4.62-13.el9_8.6.x86_64
+openssl-3.5.5-6.el9_8.x86_64
+[Thu Aug 27 20:26:10.460264 2026] [so:warn] [pid 10593:tid 10593] AH01574: module proxy_module is already loaded, skipping
+[Thu Aug 27 20:26:10.461063 2026] [so:warn] [pid 10593:tid 10593] AH01574: module proxy_http_module is already loaded, skipping
+ proxy_module (shared)
+ proxy_http_module (shared)
+ socache_shmcb_module (shared)
+ ssl_module (shared)
+
+=== WEB: CONFIGURATION ===
+[Thu Aug 27 20:26:10.517445 2026] [so:warn] [pid 10596:tid 10596] AH01574: module proxy_module is already loaded, skipping
+[Thu Aug 27 20:26:10.518543 2026] [so:warn] [pid 10596:tid 10596] AH01574: module proxy_http_module is already loaded, skipping
+Syntax OK
+[Thu Aug 27 20:26:10.576312 2026] [so:warn] [pid 10599:tid 10599] AH01574: module proxy_module is already loaded, skipping
+[Thu Aug 27 20:26:10.577437 2026] [so:warn] [pid 10599:tid 10599] AH01574: module proxy_http_module is already loaded, skipping
+VirtualHost configuration:
+*:443                  is a NameVirtualHost
+         default server www.cybersec.internal (/etc/httpd/conf.d/ssl.conf:6)
+         port 443 namevhost www.cybersec.internal (/etc/httpd/conf.d/ssl.conf:6)
+                 alias cybersec.internal
+         port 443 namevhost services.cybersec.internal (/etc/httpd/conf.d/ssl.conf:28)
+2:Listen 443 https
+7:    ServerName www.cybersec.internal
+8:    ServerAlias cybersec.internal
+12:    SSLCertificateFile "/etc/pki/tls/certs/csa-webserver.crt"
+13:    SSLCertificateKeyFile "/etc/pki/tls/private/csa-webserver.key"
+16:    SSLProtocol -all +TLSv1.3
+17:    SSLCipherSuite TLSv1.3 "TLS_AES_256_GCM_SHA384"
+21:    ProxyPassInherit On
+29:    ServerName services.cybersec.internal
+32:    SSLCertificateFile "/etc/pki/tls/certs/csa-webserver.crt"
+33:    SSLCertificateKeyFile "/etc/pki/tls/private/csa-webserver.key"
+36:    SSLProtocol -all +TLSv1.3
+37:    SSLCipherSuite TLSv1.3 "TLS_AES_256_GCM_SHA384"
+41:    ProxyPassInherit Off
+43:    ProxyPass "/" "http://127.0.0.1:9200/"
+44:    ProxyPassReverse "/" "http://127.0.0.1:9200/"
+
+=== WEB: LISTENERS ===
+LISTEN 0      128          0.0.0.0:9200      0.0.0.0:*    users:(("python",pid=700,fd=6),("python",pid=700,fd=5),("python",pid=632,fd=5))
+LISTEN 0      4096               *:8000            *:*    users:(("java",pid=633,fd=14))
+LISTEN 0      511                *:80              *:*    users:(("httpd",pid=10494,fd=4),("httpd",pid=10288,fd=4),("httpd",pid=10287,fd=4),("httpd",pid=10286,fd=4),("httpd",pid=10283,fd=4))
+LISTEN 0      511                *:443             *:*    users:(("httpd",pid=10494,fd=6),("httpd",pid=10288,fd=6),("httpd",pid=10287,fd=6),("httpd",pid=10286,fd=6),("httpd",pid=10283,fd=6))
+
+=== WEB: CERTIFICATE ===
+/etc/pki/tls/certs/csa-webserver.crt: OK
+subject=C=BE, ST=Oost-Vlaanderen, L=Aalst, O=CSA Lab, OU=Lab 6, CN=cybersec.internal
+issuer=C=BE, ST=Oost-Vlaanderen, L=Aalst, O=CSA Lab, OU=Lab 6, CN=CSA Lab Root CA
+serial=6BECBDEFCC31AFA4336E54AD99CBE2F95057E335
+notBefore=Aug 27 20:02:35 2026 GMT
+notAfter=Nov 29 20:02:35 2028 GMT
+sha256 Fingerprint=6F:BF:7E:B0:70:B8:25:B9:02:11:77:91:A1:19:8D:8D:7F:40:A9:D4:F1:98:CF:CB:1E:E0:69:F4:B0:33:2D:1C
+X509v3 Subject Alternative Name:
+    DNS:cybersec.internal, DNS:www.cybersec.internal, DNS:services.cybersec.internal, IP Address:172.30.0.10
+X509v3 Extended Key Usage:
+    TLS Web Server Authentication
+
+=== WEB: SERVICES ===
+httpd                active
+insecurewebapp       active
+flaskapp             active
+[RUN] Kopieer employee-final-client-verification.sh naar employee
+
+[RUN] final-client-verification op employee
+=== EMPLOYEE: DNS ===
+cybersec.internal.	86400	IN	A	172.30.0.10
+www.cybersec.internal.	86400	IN	A	172.30.0.10
+services.cybersec.internal. 86400 IN	A	172.30.0.10
+
+=== EMPLOYEE: TRUSTED HTTPS ENDPOINTS ===
+https://www.cybersec.internal/                       HTTP 200
+https://cybersec.internal/                           HTTP 200
+https://www.cybersec.internal/cmd                    HTTP 200
+https://www.cybersec.internal/services               HTTP 200
+https://services.cybersec.internal/                  HTTP 200
+
+=== EMPLOYEE: TLS 1.3 NEGOTIATION ===
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.3
+Ciphersuite: TLS_AES_256_GCM_SHA384
+Peer certificate: C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+Hash used: SHA256
+Signature type: RSA-PSS
+Verification: OK
+Server Temp Key: X25519, 253 bits
+DONE
+
+=== EMPLOYEE: TLS 1.2 REJECTION ===
+48DB14ED5E7F0000:error:0A00042E:SSL routines:ssl3_read_bytes:tlsv1 alert protocol version:ssl/record/rec_layer_s3.c:1586:SSL alert number 70
+TLS 1.2 is correct geweigerd in de eindconfiguratie.
+[RUN] Kopieer red-final-browser-vm-verification.sh naar red
+
+[RUN] final-browser-vm-verification op red
+=== RED/BROWSER VM: SYSTEM TRUST AND HTTPS ===
+https://cybersec.internal/                     HTTP 200
+https://www.cybersec.internal/                 HTTP 200
+https://services.cybersec.internal/            HTTP 200
+[RUN] Kopieer isprouter-final-external-https-verification.sh naar isprouter
+
+[RUN] final-external-https-verification op isprouter
+=== ISPROUTER: HTTPS THROUGH COMPANYROUTER FIREWALL ===
+https://cybersec.internal/                 HTTP 200
+https://www.cybersec.internal/             HTTP 200
+https://services.cybersec.internal/        HTTP 200
+[RUN] Kopieer companyrouter-final-firewall-verification.sh naar companyrouter
+
+[RUN] final-firewall-verification op companyrouter
+=== COMPANYROUTER: ACTIVE FORWARD RULES ===
+table inet csa_firewall {
+	chain forward {
+		type filter hook forward priority 0; policy drop;
+		ct state 0x1 drop
+		ct state 0x2,0x4 accept
+		iifname "eth2" oifname "eth1" accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 tcp dport 22 accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 udp dport 53 accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 tcp dport 53 accept
+		iifname "eth1" oifname "eth2" ip daddr 172.30.0.10 tcp dport { 80, 443 } accept
+		counter packets 0 bytes 0
+	}
+}
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 udp dport 53 accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 ip daddr 172.30.0.4 tcp dport 53 accept
+		iifname "eth1" oifname "eth2" ip daddr 172.30.0.10 tcp dport { 80, 443 } accept
+
+=== COMPANYROUTER: PERSISTENCE SERVICE ===
+enabled
+active
+PS>TerminatingError(git.exe): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: warning: LF will be replaced by CRLF in .gitignore."
+**********************
+Windows PowerShell transcript end
+End time: 20260827222615
+**********************

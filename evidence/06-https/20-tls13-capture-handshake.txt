@@ -1,0 +1,8 @@
+depth=1 C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = CSA Lab Root CA
+verify return:1
+depth=0 C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+verify return:1
+depth=1 C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = CSA Lab Root CA
+verify return:1
+depth=0 C = BE, ST = Oost-Vlaanderen, L = Aalst, O = CSA Lab, OU = Lab 6, CN = cybersec.internal
+verify return:1
