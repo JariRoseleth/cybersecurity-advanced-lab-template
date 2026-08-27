@@ -1,0 +1,10 @@
+[Unit]
+Description=CSA BorgBackup job
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=vagrant
+Environment=HOME=/home/vagrant
+ExecStart=/usr/local/sbin/csa-borg-backup

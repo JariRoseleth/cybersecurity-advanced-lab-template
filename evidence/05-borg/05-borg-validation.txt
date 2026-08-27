@@ -1,0 +1,169 @@
+==================================================
+CSA LAB 5 - BORGBACKUP VALIDATION
+==================================================
+2026-08-27T15:53:53+00:00
+
+=== BORG CLIENT VERSION ON WEB ===
+borg 1.2.9
+
+=== BORG SERVER VERSION ON DATABASE ===
+borg 1.2.7
+
+=== REPOSITORY INFO ===
+Repository ID: 72542133f879486841930b3aa57b3d299c0ae7e4875dc505525f465c60b25703
+Location: ssh://vagrant@172.30.0.15/./backups
+Encrypted: Yes (repokey)
+Cache: /home/vagrant/.cache/borg/72542133f879486841930b3aa57b3d299c0ae7e4875dc505525f465c60b25703
+Security dir: /home/vagrant/.config/borg/security/72542133f879486841930b3aa57b3d299c0ae7e4875dc505525f465c60b25703
+------------------------------------------------------------------------------
+                       Original size      Compressed size    Deduplicated size
+All archives:               78.06 MB             53.86 MB              6.74 MB
+
+                       Unique chunks         Total chunks
+Chunk index:                      20                   81
+
+=== AVAILABLE ARCHIVES ===
+first                                Thu, 2026-08-27 15:31:53 [d284b053e42c26d174282e4a8fd7b7a0485b7d32d1772cf4fdcd8a7994e5dc2d]
+second                               Thu, 2026-08-27 15:32:18 [816816ce4144e024ea0269d529ec29f973c699e49484861f7c70cf8ef9d466f1]
+auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
+auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
+auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
+auto-2026-08-27T15-44-04             Thu, 2026-08-27 15:44:05 [68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20]
+auto-2026-08-27T15-49-05             Thu, 2026-08-27 15:49:06 [6ce7955f0c5b0ff23b9242e2f576da88fac758f1a86b502662f083497ce10480]
+auto-2026-08-27T15-53-33             Thu, 2026-08-27 15:53:34 [b7c7a65a8a3810abea3c4b632b9ad1b7771d0da19233b261990d2c79cb6c3d7c]
+
+=== FIRST ARCHIVE ===
+drwxr-xr-x vagrant vagrant        0 Thu, 2026-08-27 15:29:55 home/vagrant/important-files
+-rw-r--r-- vagrant vagrant    25554 Thu, 2026-08-27 15:29:51 home/vagrant/important-files/bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
+-rw-r--r-- vagrant vagrant  5638480 Thu, 2026-08-27 15:29:54 home/vagrant/important-files/100.txt
+-rw-r--r-- vagrant vagrant  2391678 Thu, 2026-08-27 15:29:55 home/vagrant/important-files/996.txt
+-rw-r--r-- vagrant vagrant  1702187 Thu, 2026-08-27 15:29:55 home/vagrant/important-files/Toreador_song_cleaned.ogg
+
+=== SECOND ARCHIVE ===
+drwxr-xr-x vagrant vagrant        0 Thu, 2026-08-27 15:32:10 home/vagrant/important-files
+-rw-r--r-- vagrant vagrant    25554 Thu, 2026-08-27 15:29:51 home/vagrant/important-files/bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
+-rw-r--r-- vagrant vagrant  5638480 Thu, 2026-08-27 15:29:54 home/vagrant/important-files/100.txt
+-rw-r--r-- vagrant vagrant  2391678 Thu, 2026-08-27 15:29:55 home/vagrant/important-files/996.txt
+-rw-r--r-- vagrant vagrant  1702187 Thu, 2026-08-27 15:29:55 home/vagrant/important-files/Toreador_song_cleaned.ogg
+-rw-r--r-- vagrant vagrant       12 Thu, 2026-08-27 15:32:10 home/vagrant/important-files/test.txt
+
+=== RESTORED FILES ===
+total 9.4M
+-rw-r--r--. 1 vagrant vagrant 5.4M Aug 27 15:29 100.txt
+-rw-r--r--. 1 vagrant vagrant 2.3M Aug 27 15:29 996.txt
+-rw-r--r--. 1 vagrant vagrant 1.7M Aug 27 15:29 Toreador_song_cleaned.ogg
+-rw-r--r--. 1 vagrant vagrant  25K Aug 27 15:29 bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
+
+=== RESTORE STATE VALIDATION ===
+PASS: archive first was restored and test.txt is absent
+
+=== FULL REPOSITORY AND DATA CHECK ===
+Remote: Starting repository check
+Remote: finished segment check at segment 57
+Remote: Starting repository index check
+Remote: Index object count match.
+Remote: Finished full repository check, no problems found.
+Starting archive consistency check...
+Starting cryptographic data integrity verification...
+Finished cryptographic data integrity verification, verified 21 chunks with 0 integrity errors.
+Analyzing archive first (1/8)
+Analyzing archive second (2/8)
+Analyzing archive auto-2026-08-27T15-33-40 (3/8)
+Analyzing archive auto-2026-08-27T15-33-54 (4/8)
+Analyzing archive auto-2026-08-27T15-39-04 (5/8)
+Analyzing archive auto-2026-08-27T15-44-04 (6/8)
+Analyzing archive auto-2026-08-27T15-49-05 (7/8)
+Analyzing archive auto-2026-08-27T15-53-33 (8/8)
+Archive consistency check complete, no problems found.
+
+=== BACKUP SERVICE RESULT ===
+Result=success
+ExecMainStatus=0
+
+=== SYSTEMD TIMER ===
+NEXT                        LEFT          LAST                        PASSED       UNIT                  ACTIVATES
+Thu 2026-08-27 15:58:33 UTC 4min 34s left Thu 2026-08-27 15:49:05 UTC 4min 53s ago csa-borg-backup.timer csa-borg-backup.service
+
+1 timers listed.
+
+=== RECENT BACKUP LOG ===
+Keeping archive (rule: secondly #1):         auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
+Keeping archive (rule: secondly #2):         auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
+Keeping archive (rule: secondly #3):         auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
+csa-borg-backup.service: Deactivated successfully.
+Finished CSA BorgBackup job.
+csa-borg-backup.service: Consumed 1.042s CPU time.
+Starting CSA BorgBackup job...
+------------------------------------------------------------------------------
+Repository: ssh://vagrant@172.30.0.15/./backups
+Archive name: auto-2026-08-27T15-44-04
+Archive fingerprint: 68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20
+Time (start): Thu, 2026-08-27 15:44:05
+Time (end):   Thu, 2026-08-27 15:44:05
+Duration: 0.01 seconds
+Number of files: 4
+Utilization of max. archive size: 0%
+------------------------------------------------------------------------------
+                       Original size      Compressed size    Deduplicated size
+This archive:                9.76 MB              6.73 MB                582 B
+All archives:               58.55 MB             40.40 MB              6.74 MB
+                       Unique chunks         Total chunks
+Chunk index:                      18                   61
+------------------------------------------------------------------------------
+Warning: "--prefix" has been deprecated. Use "--glob-archives 'yourprefix*'" (-a) instead.
+Keeping archive (rule: secondly #1):         auto-2026-08-27T15-44-04             Thu, 2026-08-27 15:44:05 [68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20]
+Keeping archive (rule: secondly #2):         auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
+Keeping archive (rule: secondly #3):         auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
+Keeping archive (rule: secondly #4):         auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
+csa-borg-backup.service: Deactivated successfully.
+Finished CSA BorgBackup job.
+Starting CSA BorgBackup job...
+------------------------------------------------------------------------------
+Repository: ssh://vagrant@172.30.0.15/./backups
+Archive name: auto-2026-08-27T15-49-05
+Archive fingerprint: 6ce7955f0c5b0ff23b9242e2f576da88fac758f1a86b502662f083497ce10480
+Time (start): Thu, 2026-08-27 15:49:06
+Time (end):   Thu, 2026-08-27 15:49:06
+Duration: 0.01 seconds
+Number of files: 4
+Utilization of max. archive size: 0%
+------------------------------------------------------------------------------
+                       Original size      Compressed size    Deduplicated size
+This archive:                9.76 MB              6.73 MB                582 B
+All archives:               68.31 MB             47.13 MB              6.74 MB
+                       Unique chunks         Total chunks
+Chunk index:                      19                   71
+------------------------------------------------------------------------------
+Warning: "--prefix" has been deprecated. Use "--glob-archives 'yourprefix*'" (-a) instead.
+Keeping archive (rule: secondly #1):         auto-2026-08-27T15-49-05             Thu, 2026-08-27 15:49:06 [6ce7955f0c5b0ff23b9242e2f576da88fac758f1a86b502662f083497ce10480]
+Keeping archive (rule: secondly #2):         auto-2026-08-27T15-44-04             Thu, 2026-08-27 15:44:05 [68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20]
+Keeping archive (rule: secondly #3):         auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
+Keeping archive (rule: secondly #4):         auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
+Keeping archive (rule: secondly #5):         auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
+csa-borg-backup.service: Deactivated successfully.
+Finished CSA BorgBackup job.
+Starting CSA BorgBackup job...
+------------------------------------------------------------------------------
+Repository: ssh://vagrant@172.30.0.15/./backups
+Archive name: auto-2026-08-27T15-53-33
+Archive fingerprint: b7c7a65a8a3810abea3c4b632b9ad1b7771d0da19233b261990d2c79cb6c3d7c
+Time (start): Thu, 2026-08-27 15:53:34
+Time (end):   Thu, 2026-08-27 15:53:34
+Duration: 0.01 seconds
+Number of files: 4
+Utilization of max. archive size: 0%
+------------------------------------------------------------------------------
+                       Original size      Compressed size    Deduplicated size
+This archive:                9.76 MB              6.73 MB                581 B
+All archives:               78.06 MB             53.86 MB              6.74 MB
+                       Unique chunks         Total chunks
+Chunk index:                      20                   81
+------------------------------------------------------------------------------
+Keeping archive (rule: secondly #1):         auto-2026-08-27T15-53-33             Thu, 2026-08-27 15:53:34 [b7c7a65a8a3810abea3c4b632b9ad1b7771d0da19233b261990d2c79cb6c3d7c]
+Keeping archive (rule: secondly #2):         auto-2026-08-27T15-49-05             Thu, 2026-08-27 15:49:06 [6ce7955f0c5b0ff23b9242e2f576da88fac758f1a86b502662f083497ce10480]
+Keeping archive (rule: secondly #3):         auto-2026-08-27T15-44-04             Thu, 2026-08-27 15:44:05 [68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20]
+Keeping archive (rule: secondly #4):         auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
+Keeping archive (rule: secondly #5):         auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
+Keeping archive (rule: secondly #6):         auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
+csa-borg-backup.service: Deactivated successfully.
+Finished CSA BorgBackup job.

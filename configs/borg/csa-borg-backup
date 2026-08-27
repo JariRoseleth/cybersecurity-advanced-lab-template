@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+export HOME='/home/vagrant'
+export BORG_REPO='vagrant@172.30.0.15:backups'
+export BORG_RSH='ssh -i /home/vagrant/.ssh/borg_ed25519 -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
+export BORG_PASSCOMMAND='cat /home/vagrant/.config/borg/passphrase'
+
+ARCHIVE="auto-$(date +%Y-%m-%dT%H-%M-%S)"
+
+/usr/bin/borg create \
+    --stats \
+    --compression lz4 \
+    "${BORG_REPO}::${ARCHIVE}" \
+    /home/vagrant/important-files
+
+/usr/bin/borg prune \
+    --list \
+    --glob-archives 'auto-*' \
+    --keep-last 12 \
+    --keep-hourly 24 \
+    --keep-daily 7 \
+    --keep-weekly 4 \
+    --keep-monthly 6 \
+    "$BORG_REPO"
+
+/usr/bin/borg compact \
+    "$BORG_REPO"
