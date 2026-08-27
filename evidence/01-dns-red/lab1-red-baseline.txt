@@ -1,0 +1,169 @@
+==================================================
+CSA LAB 1 + LAB 2 INSECURE BASELINE
+==================================================
+2026-08-27T13:32:52+00:00
+
+=== HOSTNAME ===
+red
+
+=== INTERFACES ===
+lo               UNKNOWN        127.0.0.1/8 
+eth0             UP             192.168.62.10/24 
+
+=== ROUTING ===
+default via 192.168.62.254 dev eth0 
+192.168.62.0/24 dev eth0 proto kernel scope link src 192.168.62.10 
+
+=== DNS CONFIGURATION ===
+nameserver 192.168.62.254
+
+=== INTERNAL DNS LOOKUP ===
+
+; <<>> DiG 9.18.49-1~deb12u2-Debian <<>> @192.168.62.254 www.cybersec.internal
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 25983
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;www.cybersec.internal.		IN	A
+
+;; ANSWER SECTION:
+www.cybersec.internal.	85804	IN	A	172.30.0.10
+
+;; Query time: 0 msec
+;; SERVER: 192.168.62.254#53(192.168.62.254) (UDP)
+;; WHEN: Thu Aug 27 13:32:52 UTC 2026
+;; MSG SIZE  rcvd: 66
+
+
+=== DNS ZONE TRANSFER TEST ===
+
+; <<>> DiG 9.18.49-1~deb12u2-Debian <<>> @172.30.0.4 cybersec.internal AXFR
+; (1 server found)
+;; global options: +cmd
+cybersec.internal.	86400	IN	SOA	dns.cybersec.internal. admin.cybersec.internal. 2023092301 3600 1800 1209600 86400
+cybersec.internal.	86400	IN	NS	dns.cybersec.internal.
+txt.at.cybersec.internal. 86400	IN	TXT	"Greetings from CSA team!"
+dns.cybersec.internal.	86400	IN	A	172.30.0.4
+www.cybersec.internal.	86400	IN	A	172.30.0.10
+cybersec.internal.	86400	IN	SOA	dns.cybersec.internal. admin.cybersec.internal. 2023092301 3600 1800 1209600 86400
+;; Query time: 0 msec
+;; SERVER: 172.30.0.4#53(172.30.0.4) (TCP)
+;; WHEN: Thu Aug 27 13:32:52 UTC 2026
+;; XFR size: 6 records (messages 1, bytes 267)
+
+
+=== SERVICE ENUMERATION ===
+Starting Nmap 7.93 ( https://nmap.org ) at 2026-08-27 13:32 UTC
+Nmap scan report for 192.168.62.253
+Host is up (0.00026s latency).
+
+PORT     STATE  SERVICE VERSION
+22/tcp   open   ssh     OpenSSH 8.7 (protocol 2.0)
+| ssh-hostkey: 
+|   256 950a705e2e18041b120755a42a3aca6a (ECDSA)
+|_  256 725dbb171cfb7ca00fe0c89c13ada420 (ED25519)
+53/tcp   closed domain
+80/tcp   closed http
+443/tcp  closed https
+3306/tcp closed mysql
+MAC Address: 08:00:27:F8:7C:23 (Oracle VirtualBox virtual NIC)
+
+Nmap scan report for 172.30.0.4
+Host is up (0.00047s latency).
+
+PORT     STATE  SERVICE VERSION
+22/tcp   open   ssh     OpenSSH 9.3 (protocol 2.0)
+| ssh-hostkey: 
+|   256 620e99f0debd756a681e4838ab8c90ef (ECDSA)
+|_  256 aed80c5b601a29870db43251a4bbc94c (ED25519)
+53/tcp   open   domain  ISC BIND 9.18.37
+| dns-nsid: 
+|_  bind.version: 9.18.37
+80/tcp   closed http
+443/tcp  closed https
+3306/tcp closed mysql
+
+Nmap scan report for 172.30.0.10
+Host is up (0.00064s latency).
+
+PORT     STATE  SERVICE VERSION
+22/tcp   open   ssh     OpenSSH 8.7 (protocol 2.0)
+| ssh-hostkey: 
+|   256 88ddbb153e1f388686791c3ba525cb99 (ECDSA)
+|_  256 f908a75f67323ba36b156e21aded0dbc (ED25519)
+53/tcp   closed domain
+80/tcp   open   http    Apache httpd 2.4.62 ((AlmaLinux))
+|_http-title: Welcome to Example Test Environment
+|_http-server-header: Apache/2.4.62 (AlmaLinux)
+| http-methods: 
+|_  Potentially risky methods: TRACE
+443/tcp  closed https
+3306/tcp closed mysql
+
+Nmap scan report for 172.30.0.15
+Host is up (0.00054s latency).
+
+PORT     STATE  SERVICE VERSION
+22/tcp   open   ssh     OpenSSH 9.3 (protocol 2.0)
+| ssh-hostkey: 
+|   256 24f6c2266e83b2f78bd4fe347af461ba (ECDSA)
+|_  256 8e05b54b21b920279973da7185317c3c (ED25519)
+53/tcp   closed domain
+80/tcp   closed http
+443/tcp  closed https
+3306/tcp open   mysql   MySQL 5.5.5-10.11.11-MariaDB
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.5.5-10.11.11-MariaDB
+|   Thread ID: 11
+|   Capabilities flags: 63486
+|   Some Capabilities: SupportsTransactions, ODBCClient, DontAllowDatabaseTableColumn, Speaks41ProtocolOld, IgnoreSigpipes, SupportsLoadDataLocal, IgnoreSpaceBeforeParenthesis, LongColumnFlag, InteractiveClient, Speaks41ProtocolNew, FoundRows, Support41Auth, SupportsCompression, ConnectWithDatabase, SupportsMultipleStatments, SupportsAuthPlugins, SupportsMultipleResults
+|   Status: Autocommit
+|   Salt: >I4i4f&&.S7W1--:{}%;
+|_  Auth Plugin Name: mysql_native_password
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 4 IP addresses (4 hosts up) scanned in 15.31 seconds
+
+=== INSECURE DATABASE LOGIN ===
+VERSION()
+10.11.11-MariaDB
+Database
+db_services
+information_schema
+mysql
+performance_schema
+sys
+test
+
+=== INSECURE HTTP WEBSITE ===
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0  1423    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+HTTP/1.1 200 OK
+Date: Thu, 27 Aug 2026 13:33:03 GMT
+Server: Apache/2.4.62 (AlmaLinux)
+Last-Modified: Thu, 27 Aug 2026 12:29:52 GMT
+ETag: "58f-65a067e20db71"
+Accept-Ranges: bytes
+Content-Length: 1423
+Content-Type: text/html; charset=UTF-8
+
+
+=== INSECURE CMD APPLICATION ===
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0   577    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+HTTP/1.1 200 OK
+Date: Thu, 27 Aug 2026 13:33:03 GMT
+Server: Apache/2.4.62 (AlmaLinux)
+accept-ranges: bytes
+content-length: 577
+cache-control: public, immutable, max-age=86400
+last-modified: Thu, 27 Aug 2026 13:33:03 GMT
+

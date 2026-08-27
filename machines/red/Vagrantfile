@@ -1,0 +1,34 @@
+HOST_ONLY_NETWORK = "VirtualBox Host-Only Ethernet Adapter #2"
+
+Vagrant.configure("2") do |config|
+  config.vm.define "red" do |red|
+    red.vm.box = "generic/debian12"
+    red.vm.hostname = "red"
+
+    # Geen gedeelde map nodig voor deze aanvallersmachine.
+    red.vm.synced_folder ".", "/vagrant", disabled: true
+
+    # Tijdelijk bestaat ook de standaard Vagrant-NAT-adapter.
+    # Na de installatie verwijderen we die, zodat alleen fake internet overblijft.
+    red.vm.network "private_network",
+      ip: "192.168.62.10",
+      netmask: "255.255.255.0",
+      name: HOST_ONLY_NETWORK
+
+    red.vm.provider "virtualbox" do |v|
+      v.name = "red"
+      v.cpus = 2
+      v.memory = 1024
+
+      # Vast MAC-adres voor de host-onlyinterface.
+      v.customize [
+        "modifyvm",
+        :id,
+        "--macaddress2",
+        "080027621010"
+      ]
+    end
+
+    red.vm.provision "shell", path: "provision-red.sh"
+  end
+end
