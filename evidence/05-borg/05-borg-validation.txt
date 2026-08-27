@@ -1,7 +1,7 @@
 ==================================================
-CSA LAB 5 - BORGBACKUP VALIDATION
+CSA LAB 5 - BORGBACKUP FINAL VALIDATION
 ==================================================
-2026-08-27T15:53:53+00:00
+2026-08-27T18:23:15+00:00
 
 === BORG CLIENT VERSION ON WEB ===
 borg 1.2.9
@@ -9,7 +9,18 @@ borg 1.2.9
 === BORG SERVER VERSION ON DATABASE ===
 borg 1.2.7
 
-=== REPOSITORY INFO ===
+=== SOURCE DATA SIZE ===
+116M	/home/vagrant/important-files
+121M	/home/vagrant/important-files
+
+=== VIDEO VALIDATION ===
+/home/vagrant/important-files/bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4: 110916740 bytes
+MP4 header: b'\x00\x00\x00 ftypisom\x00\x00\x02\x00'
+
+=== REMOTE REPOSITORY SIZE ===
+112.2M	/home/vagrant/backups
+
+=== REPOSITORY INFORMATION ===
 Repository ID: 72542133f879486841930b3aa57b3d299c0ae7e4875dc505525f465c60b25703
 Location: ssh://vagrant@172.30.0.15/./backups
 Encrypted: Yes (repokey)
@@ -17,153 +28,176 @@ Cache: /home/vagrant/.cache/borg/72542133f879486841930b3aa57b3d299c0ae7e4875dc50
 Security dir: /home/vagrant/.config/borg/security/72542133f879486841930b3aa57b3d299c0ae7e4875dc505525f465c60b25703
 ------------------------------------------------------------------------------
                        Original size      Compressed size    Deduplicated size
-All archives:               78.06 MB             53.86 MB              6.74 MB
+All archives:                1.83 GB              1.78 GB            117.53 MB
 
                        Unique chunks         Total chunks
-Chunk index:                      20                   81
+Chunk index:                      82                  936
 
-=== AVAILABLE ARCHIVES ===
-first                                Thu, 2026-08-27 15:31:53 [d284b053e42c26d174282e4a8fd7b7a0485b7d32d1772cf4fdcd8a7994e5dc2d]
-second                               Thu, 2026-08-27 15:32:18 [816816ce4144e024ea0269d529ec29f973c699e49484861f7c70cf8ef9d466f1]
+=== ALL ARCHIVES ===
 auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
-auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
-auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
-auto-2026-08-27T15-44-04             Thu, 2026-08-27 15:44:05 [68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20]
-auto-2026-08-27T15-49-05             Thu, 2026-08-27 15:49:06 [6ce7955f0c5b0ff23b9242e2f576da88fac758f1a86b502662f083497ce10480]
-auto-2026-08-27T15-53-33             Thu, 2026-08-27 15:53:34 [b7c7a65a8a3810abea3c4b632b9ad1b7771d0da19233b261990d2c79cb6c3d7c]
+auto-2026-08-27T15-58-35             Thu, 2026-08-27 15:58:37 [f5b50067af2dd9ac0cf7a3eaecc2202a9ac69d6c65218dd39320ee5679d66b68]
+first                                Thu, 2026-08-27 16:24:11 [3d874d25784000ff8e9d709b604c0ce1e46c1bb8df6a7c985f433403c62acf1e]
+second                               Thu, 2026-08-27 16:24:15 [42d35c8ebf751d177f1b80ac63ab340f7ebb51911622041ed2c8cb2e29601ea1]
+auto-2026-08-27T16-49-45             Thu, 2026-08-27 16:49:46 [3873df71353f6606ada503b29f1c48342fa24ac32d2ea925043c1bb450795fc3]
+auto-2026-08-27T16-54-53             Thu, 2026-08-27 16:54:54 [f514d0cfcf389ebef153be01484354e1b3f93f78d0ec5986e3daa9d5ea696532]
+auto-2026-08-27T17-00-04             Thu, 2026-08-27 17:00:05 [7ff65b21f50117d6a7cb7c73a232133deaa87d1053fe5e9422404404eabded6f]
+auto-2026-08-27T17-05-14             Thu, 2026-08-27 17:05:15 [532c178e0efca8daf79f7f5be7799b9934d0365caf027d5d6ca19ed08e616e9c]
+auto-2026-08-27T17-10-25             Thu, 2026-08-27 17:10:26 [6887342bacbf051d205935ef39c9254e6a7b49e6ddfe856786e0719606b30e03]
+auto-2026-08-27T17-14-59             Thu, 2026-08-27 17:15:00 [54db41e1f8fbf80b65d4d418a0db8071b8145415ad2890dc0623baf7275a69bb]
+auto-2026-08-27T17-15-03             Thu, 2026-08-27 17:15:04 [53658001d49425fbab031e628ccdaf45877d625d6e2083aa650acc2bd35685d8]
+auto-2026-08-27T17-20-16             Thu, 2026-08-27 17:20:17 [b3eeef8558d7d6632509b821f86a06baabfe8aa3916e72392a9030d4f69105fa]
+auto-2026-08-27T17-25-26             Thu, 2026-08-27 17:25:27 [9e6416715517c663b0aaf2ea1d135d8e5ee196a6350625c2bb63ba25d50d4f9a]
+auto-2026-08-27T17-30-36             Thu, 2026-08-27 17:30:37 [76f8a719472a7c3cbec77b8275bceb60b8cb759ee39d37db03fd2decd7cd0995]
+auto-2026-08-27T18-23-11             Thu, 2026-08-27 18:23:12 [0a2708fc8d82756aa6b44ff10ae8c298b41cf9c21e0bfed2d6a8ac919b8db37e]
+auto-2026-08-27T18-23-15             Thu, 2026-08-27 18:23:17 [8aed74b42d0fae5e862769e1b2a6f6da3abfe6be9bfdd8956c675b8f37e8ca0f]
 
-=== FIRST ARCHIVE ===
-drwxr-xr-x vagrant vagrant        0 Thu, 2026-08-27 15:29:55 home/vagrant/important-files
--rw-r--r-- vagrant vagrant    25554 Thu, 2026-08-27 15:29:51 home/vagrant/important-files/bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
+=== ARCHIVE FIRST ===
+drwxr-xr-x vagrant vagrant        0 Thu, 2026-08-27 16:24:08 home/vagrant/important-files
 -rw-r--r-- vagrant vagrant  5638480 Thu, 2026-08-27 15:29:54 home/vagrant/important-files/100.txt
 -rw-r--r-- vagrant vagrant  2391678 Thu, 2026-08-27 15:29:55 home/vagrant/important-files/996.txt
 -rw-r--r-- vagrant vagrant  1702187 Thu, 2026-08-27 15:29:55 home/vagrant/important-files/Toreador_song_cleaned.ogg
+-rw-r--r-- vagrant vagrant 110916740 Thu, 2026-08-27 16:24:08 home/vagrant/important-files/bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
 
-=== SECOND ARCHIVE ===
-drwxr-xr-x vagrant vagrant        0 Thu, 2026-08-27 15:32:10 home/vagrant/important-files
--rw-r--r-- vagrant vagrant    25554 Thu, 2026-08-27 15:29:51 home/vagrant/important-files/bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
+=== ARCHIVE SECOND ===
+drwxr-xr-x vagrant vagrant        0 Thu, 2026-08-27 16:24:13 home/vagrant/important-files
 -rw-r--r-- vagrant vagrant  5638480 Thu, 2026-08-27 15:29:54 home/vagrant/important-files/100.txt
 -rw-r--r-- vagrant vagrant  2391678 Thu, 2026-08-27 15:29:55 home/vagrant/important-files/996.txt
 -rw-r--r-- vagrant vagrant  1702187 Thu, 2026-08-27 15:29:55 home/vagrant/important-files/Toreador_song_cleaned.ogg
--rw-r--r-- vagrant vagrant       12 Thu, 2026-08-27 15:32:10 home/vagrant/important-files/test.txt
+-rw-r--r-- vagrant vagrant 110916740 Thu, 2026-08-27 16:24:08 home/vagrant/important-files/bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
+-rw-r--r-- vagrant vagrant       12 Thu, 2026-08-27 16:24:13 home/vagrant/important-files/test.txt
 
 === RESTORED FILES ===
-total 9.4M
+total 116M
 -rw-r--r--. 1 vagrant vagrant 5.4M Aug 27 15:29 100.txt
 -rw-r--r--. 1 vagrant vagrant 2.3M Aug 27 15:29 996.txt
 -rw-r--r--. 1 vagrant vagrant 1.7M Aug 27 15:29 Toreador_song_cleaned.ogg
--rw-r--r--. 1 vagrant vagrant  25K Aug 27 15:29 bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
+-rw-r--r--. 1 vagrant vagrant 106M Aug 27 16:24 bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4
 
-=== RESTORE STATE VALIDATION ===
-PASS: archive first was restored and test.txt is absent
+=== RESTORE RESULT ===
+PASS: all four original files exist
+PASS: test.txt is absent after restoring archive first
 
-=== FULL REPOSITORY AND DATA CHECK ===
+=== FULL CRYPTOGRAPHIC DATA CHECK ===
 Remote: Starting repository check
-Remote: finished segment check at segment 57
+Remote: finished segment check at segment 294
 Remote: Starting repository index check
 Remote: Index object count match.
-Remote: Finished full repository check, no problems found.
 Starting archive consistency check...
+Remote: Finished full repository check, no problems found.
 Starting cryptographic data integrity verification...
-Finished cryptographic data integrity verification, verified 21 chunks with 0 integrity errors.
-Analyzing archive first (1/8)
-Analyzing archive second (2/8)
-Analyzing archive auto-2026-08-27T15-33-40 (3/8)
-Analyzing archive auto-2026-08-27T15-33-54 (4/8)
-Analyzing archive auto-2026-08-27T15-39-04 (5/8)
-Analyzing archive auto-2026-08-27T15-44-04 (6/8)
-Analyzing archive auto-2026-08-27T15-49-05 (7/8)
-Analyzing archive auto-2026-08-27T15-53-33 (8/8)
+Finished cryptographic data integrity verification, verified 82 chunks with 0 integrity errors.
+Analyzing archive auto-2026-08-27T15-33-40 (1/16)
+Analyzing archive auto-2026-08-27T15-58-35 (2/16)
+Analyzing archive first (3/16)
+Analyzing archive second (4/16)
+Analyzing archive auto-2026-08-27T16-49-45 (5/16)
+Analyzing archive auto-2026-08-27T16-54-53 (6/16)
+Analyzing archive auto-2026-08-27T17-00-04 (7/16)
+Analyzing archive auto-2026-08-27T17-05-14 (8/16)
+Analyzing archive auto-2026-08-27T17-10-25 (9/16)
+Analyzing archive auto-2026-08-27T17-14-59 (10/16)
+Analyzing archive auto-2026-08-27T17-15-03 (11/16)
+Analyzing archive auto-2026-08-27T17-20-16 (12/16)
+Analyzing archive auto-2026-08-27T17-25-26 (13/16)
+Analyzing archive auto-2026-08-27T17-30-36 (14/16)
+Analyzing archive auto-2026-08-27T18-23-11 (15/16)
+Analyzing archive auto-2026-08-27T18-23-15 (16/16)
 Archive consistency check complete, no problems found.
+
+=== RETENTION CONFIGURATION ===
+19:    --glob-archives 'auto-*' \
+20:    --keep-last 12 \
+21:    --keep-hourly 24 \
+22:    --keep-daily 7 \
+23:    --keep-weekly 4 \
+24:    --keep-monthly 6 \
 
 === BACKUP SERVICE RESULT ===
 Result=success
 ExecMainStatus=0
 
-=== SYSTEMD TIMER ===
-NEXT                        LEFT          LAST                        PASSED       UNIT                  ACTIVATES
-Thu 2026-08-27 15:58:33 UTC 4min 34s left Thu 2026-08-27 15:49:05 UTC 4min 53s ago csa-borg-backup.timer csa-borg-backup.service
+=== TIMER ENABLED AND ACTIVE ===
+enabled
+active
+
+=== NEXT SCHEDULED BACKUP ===
+NEXT                        LEFT          LAST                        PASSED UNIT                  ACTIVATES
+Thu 2026-08-27 18:28:20 UTC 4min 55s left Thu 2026-08-27 18:23:15 UTC 8s ago csa-borg-backup.timer csa-borg-backup.service
 
 1 timers listed.
 
 === RECENT BACKUP LOG ===
-Keeping archive (rule: secondly #1):         auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
-Keeping archive (rule: secondly #2):         auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
-Keeping archive (rule: secondly #3):         auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
-csa-borg-backup.service: Deactivated successfully.
-Finished CSA BorgBackup job.
-csa-borg-backup.service: Consumed 1.042s CPU time.
 Starting CSA BorgBackup job...
 ------------------------------------------------------------------------------
 Repository: ssh://vagrant@172.30.0.15/./backups
-Archive name: auto-2026-08-27T15-44-04
-Archive fingerprint: 68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20
-Time (start): Thu, 2026-08-27 15:44:05
-Time (end):   Thu, 2026-08-27 15:44:05
-Duration: 0.01 seconds
+Archive name: auto-2026-08-27T18-23-11
+Archive fingerprint: 0a2708fc8d82756aa6b44ff10ae8c298b41cf9c21e0bfed2d6a8ac919b8db37e
+Time (start): Thu, 2026-08-27 18:23:12
+Time (end):   Thu, 2026-08-27 18:23:13
+Duration: 0.22 seconds
 Number of files: 4
 Utilization of max. archive size: 0%
 ------------------------------------------------------------------------------
                        Original size      Compressed size    Deduplicated size
-This archive:                9.76 MB              6.73 MB                582 B
-All archives:               58.55 MB             40.40 MB              6.74 MB
+This archive:              120.65 MB            117.50 MB                585 B
+All archives:                1.83 GB              1.78 GB            117.53 MB
                        Unique chunks         Total chunks
-Chunk index:                      18                   61
+Chunk index:                      82                  936
 ------------------------------------------------------------------------------
-Warning: "--prefix" has been deprecated. Use "--glob-archives 'yourprefix*'" (-a) instead.
-Keeping archive (rule: secondly #1):         auto-2026-08-27T15-44-04             Thu, 2026-08-27 15:44:05 [68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20]
-Keeping archive (rule: secondly #2):         auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
-Keeping archive (rule: secondly #3):         auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
-Keeping archive (rule: secondly #4):         auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
+Keeping archive (rule: secondly #1):         auto-2026-08-27T18-23-11             Thu, 2026-08-27 18:23:12 [0a2708fc8d82756aa6b44ff10ae8c298b41cf9c21e0bfed2d6a8ac919b8db37e]
+Keeping archive (rule: secondly #2):         auto-2026-08-27T17-30-36             Thu, 2026-08-27 17:30:37 [76f8a719472a7c3cbec77b8275bceb60b8cb759ee39d37db03fd2decd7cd0995]
+Keeping archive (rule: secondly #3):         auto-2026-08-27T17-25-26             Thu, 2026-08-27 17:25:27 [9e6416715517c663b0aaf2ea1d135d8e5ee196a6350625c2bb63ba25d50d4f9a]
+Keeping archive (rule: secondly #4):         auto-2026-08-27T17-20-16             Thu, 2026-08-27 17:20:17 [b3eeef8558d7d6632509b821f86a06baabfe8aa3916e72392a9030d4f69105fa]
+Keeping archive (rule: secondly #5):         auto-2026-08-27T17-15-03             Thu, 2026-08-27 17:15:04 [53658001d49425fbab031e628ccdaf45877d625d6e2083aa650acc2bd35685d8]
+Keeping archive (rule: secondly #6):         auto-2026-08-27T17-14-59             Thu, 2026-08-27 17:15:00 [54db41e1f8fbf80b65d4d418a0db8071b8145415ad2890dc0623baf7275a69bb]
+Keeping archive (rule: secondly #7):         auto-2026-08-27T17-10-25             Thu, 2026-08-27 17:10:26 [6887342bacbf051d205935ef39c9254e6a7b49e6ddfe856786e0719606b30e03]
+Keeping archive (rule: secondly #8):         auto-2026-08-27T17-05-14             Thu, 2026-08-27 17:05:15 [532c178e0efca8daf79f7f5be7799b9934d0365caf027d5d6ca19ed08e616e9c]
+Keeping archive (rule: secondly #9):         auto-2026-08-27T17-00-04             Thu, 2026-08-27 17:00:05 [7ff65b21f50117d6a7cb7c73a232133deaa87d1053fe5e9422404404eabded6f]
+Keeping archive (rule: secondly #10):        auto-2026-08-27T16-54-53             Thu, 2026-08-27 16:54:54 [f514d0cfcf389ebef153be01484354e1b3f93f78d0ec5986e3daa9d5ea696532]
+Keeping archive (rule: secondly #11):        auto-2026-08-27T16-49-45             Thu, 2026-08-27 16:49:46 [3873df71353f6606ada503b29f1c48342fa24ac32d2ea925043c1bb450795fc3]
+Keeping archive (rule: secondly #12):        auto-2026-08-27T16-49-41             Thu, 2026-08-27 16:49:42 [a7264c02e54daedaa9161baae94fde56659deaaed16bb5245d3d60a7acef8e8b]
+Pruning archive (1/1):                       auto-2026-08-27T16-24-20             Thu, 2026-08-27 16:24:21 [75443367ae9a2e6d7742b802fba3163b60ebc4089ab74f20f5c62760b1d7d85b]
+Keeping archive (rule: hourly #1):           auto-2026-08-27T15-58-35             Thu, 2026-08-27 15:58:37 [f5b50067af2dd9ac0cf7a3eaecc2202a9ac69d6c65218dd39320ee5679d66b68]
+Keeping archive (rule: hourly[oldest] #2):   auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
 csa-borg-backup.service: Deactivated successfully.
 Finished CSA BorgBackup job.
+csa-borg-backup.service: Consumed 1.105s CPU time.
 Starting CSA BorgBackup job...
 ------------------------------------------------------------------------------
 Repository: ssh://vagrant@172.30.0.15/./backups
-Archive name: auto-2026-08-27T15-49-05
-Archive fingerprint: 6ce7955f0c5b0ff23b9242e2f576da88fac758f1a86b502662f083497ce10480
-Time (start): Thu, 2026-08-27 15:49:06
-Time (end):   Thu, 2026-08-27 15:49:06
-Duration: 0.01 seconds
+Archive name: auto-2026-08-27T18-23-15
+Archive fingerprint: 8aed74b42d0fae5e862769e1b2a6f6da3abfe6be9bfdd8956c675b8f37e8ca0f
+Time (start): Thu, 2026-08-27 18:23:17
+Time (end):   Thu, 2026-08-27 18:23:17
+Duration: 0.43 seconds
 Number of files: 4
 Utilization of max. archive size: 0%
 ------------------------------------------------------------------------------
                        Original size      Compressed size    Deduplicated size
-This archive:                9.76 MB              6.73 MB                582 B
-All archives:               68.31 MB             47.13 MB              6.74 MB
+This archive:              120.65 MB            117.50 MB                583 B
+All archives:                1.83 GB              1.78 GB            117.53 MB
                        Unique chunks         Total chunks
-Chunk index:                      19                   71
+Chunk index:                      82                  936
 ------------------------------------------------------------------------------
-Warning: "--prefix" has been deprecated. Use "--glob-archives 'yourprefix*'" (-a) instead.
-Keeping archive (rule: secondly #1):         auto-2026-08-27T15-49-05             Thu, 2026-08-27 15:49:06 [6ce7955f0c5b0ff23b9242e2f576da88fac758f1a86b502662f083497ce10480]
-Keeping archive (rule: secondly #2):         auto-2026-08-27T15-44-04             Thu, 2026-08-27 15:44:05 [68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20]
-Keeping archive (rule: secondly #3):         auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
-Keeping archive (rule: secondly #4):         auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
-Keeping archive (rule: secondly #5):         auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
+Keeping archive (rule: secondly #1):         auto-2026-08-27T18-23-15             Thu, 2026-08-27 18:23:17 [8aed74b42d0fae5e862769e1b2a6f6da3abfe6be9bfdd8956c675b8f37e8ca0f]
+Keeping archive (rule: secondly #2):         auto-2026-08-27T18-23-11             Thu, 2026-08-27 18:23:12 [0a2708fc8d82756aa6b44ff10ae8c298b41cf9c21e0bfed2d6a8ac919b8db37e]
+Keeping archive (rule: secondly #3):         auto-2026-08-27T17-30-36             Thu, 2026-08-27 17:30:37 [76f8a719472a7c3cbec77b8275bceb60b8cb759ee39d37db03fd2decd7cd0995]
+Keeping archive (rule: secondly #4):         auto-2026-08-27T17-25-26             Thu, 2026-08-27 17:25:27 [9e6416715517c663b0aaf2ea1d135d8e5ee196a6350625c2bb63ba25d50d4f9a]
+Keeping archive (rule: secondly #5):         auto-2026-08-27T17-20-16             Thu, 2026-08-27 17:20:17 [b3eeef8558d7d6632509b821f86a06baabfe8aa3916e72392a9030d4f69105fa]
+Keeping archive (rule: secondly #6):         auto-2026-08-27T17-15-03             Thu, 2026-08-27 17:15:04 [53658001d49425fbab031e628ccdaf45877d625d6e2083aa650acc2bd35685d8]
+Keeping archive (rule: secondly #7):         auto-2026-08-27T17-14-59             Thu, 2026-08-27 17:15:00 [54db41e1f8fbf80b65d4d418a0db8071b8145415ad2890dc0623baf7275a69bb]
+Keeping archive (rule: secondly #8):         auto-2026-08-27T17-10-25             Thu, 2026-08-27 17:10:26 [6887342bacbf051d205935ef39c9254e6a7b49e6ddfe856786e0719606b30e03]
+Keeping archive (rule: secondly #9):         auto-2026-08-27T17-05-14             Thu, 2026-08-27 17:05:15 [532c178e0efca8daf79f7f5be7799b9934d0365caf027d5d6ca19ed08e616e9c]
+Keeping archive (rule: secondly #10):        auto-2026-08-27T17-00-04             Thu, 2026-08-27 17:00:05 [7ff65b21f50117d6a7cb7c73a232133deaa87d1053fe5e9422404404eabded6f]
+Keeping archive (rule: secondly #11):        auto-2026-08-27T16-54-53             Thu, 2026-08-27 16:54:54 [f514d0cfcf389ebef153be01484354e1b3f93f78d0ec5986e3daa9d5ea696532]
+Keeping archive (rule: secondly #12):        auto-2026-08-27T16-49-45             Thu, 2026-08-27 16:49:46 [3873df71353f6606ada503b29f1c48342fa24ac32d2ea925043c1bb450795fc3]
+Pruning archive (1/1):                       auto-2026-08-27T16-49-41             Thu, 2026-08-27 16:49:42 [a7264c02e54daedaa9161baae94fde56659deaaed16bb5245d3d60a7acef8e8b]
+Keeping archive (rule: hourly #1):           auto-2026-08-27T15-58-35             Thu, 2026-08-27 15:58:37 [f5b50067af2dd9ac0cf7a3eaecc2202a9ac69d6c65218dd39320ee5679d66b68]
+Keeping archive (rule: hourly[oldest] #2):   auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
 csa-borg-backup.service: Deactivated successfully.
 Finished CSA BorgBackup job.
-Starting CSA BorgBackup job...
-------------------------------------------------------------------------------
-Repository: ssh://vagrant@172.30.0.15/./backups
-Archive name: auto-2026-08-27T15-53-33
-Archive fingerprint: b7c7a65a8a3810abea3c4b632b9ad1b7771d0da19233b261990d2c79cb6c3d7c
-Time (start): Thu, 2026-08-27 15:53:34
-Time (end):   Thu, 2026-08-27 15:53:34
-Duration: 0.01 seconds
-Number of files: 4
-Utilization of max. archive size: 0%
-------------------------------------------------------------------------------
-                       Original size      Compressed size    Deduplicated size
-This archive:                9.76 MB              6.73 MB                581 B
-All archives:               78.06 MB             53.86 MB              6.74 MB
-                       Unique chunks         Total chunks
-Chunk index:                      20                   81
-------------------------------------------------------------------------------
-Keeping archive (rule: secondly #1):         auto-2026-08-27T15-53-33             Thu, 2026-08-27 15:53:34 [b7c7a65a8a3810abea3c4b632b9ad1b7771d0da19233b261990d2c79cb6c3d7c]
-Keeping archive (rule: secondly #2):         auto-2026-08-27T15-49-05             Thu, 2026-08-27 15:49:06 [6ce7955f0c5b0ff23b9242e2f576da88fac758f1a86b502662f083497ce10480]
-Keeping archive (rule: secondly #3):         auto-2026-08-27T15-44-04             Thu, 2026-08-27 15:44:05 [68d7fa856e815b4ce34ec36ef0f887796a08462e44610086dc103f0943bf5e20]
-Keeping archive (rule: secondly #4):         auto-2026-08-27T15-39-04             Thu, 2026-08-27 15:39:05 [a8036bab436b46a542ccefd318f6756420324caec2270c5d525950a182f8d7bf]
-Keeping archive (rule: secondly #5):         auto-2026-08-27T15-33-54             Thu, 2026-08-27 15:33:55 [45474bb725bdbf0e06ff6635c90adf1e4346a4dfb8c70c267f62465b2b6c165c]
-Keeping archive (rule: secondly #6):         auto-2026-08-27T15-33-40             Thu, 2026-08-27 15:33:41 [75491012085aef220d00de7c16a7cbc7148dd0503bd5397f86f41789a6237518]
-csa-borg-backup.service: Deactivated successfully.
-Finished CSA BorgBackup job.
+csa-borg-backup.service: Consumed 1.134s CPU time.
+
+==================================================
+LAB 5 FINAL VALIDATION COMPLETED SUCCESSFULLY
+==================================================

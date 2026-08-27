@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 export HOME='/home/vagrant'
 export BORG_REPO='vagrant@172.30.0.15:backups'
-export BORG_RSH='ssh -i /home/vagrant/.ssh/borg_ed25519 -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
+export BORG_RSH='ssh -i /home/vagrant/.ssh/borg_ed25519 -o IdentitiesOnly=yes -o PasswordAuthentication=no -o StrictHostKeyChecking=accept-new'
 export BORG_PASSCOMMAND='cat /home/vagrant/.config/borg/passphrase'
 
 ARCHIVE="auto-$(date +%Y-%m-%dT%H-%M-%S)"
