@@ -1,4 +1,5 @@
-﻿table inet csa_firewall {
+﻿active
+table inet csa_firewall {
 	chain input {
 		type filter hook input priority filter; policy drop;
 		ct state invalid drop
@@ -8,7 +9,7 @@
 		iifname "eth2" ip protocol icmp accept
 		iifname "eth1" ip saddr { 192.168.62.1, 192.168.62.254 } tcp dport 22 accept
 		iifname "eth2" tcp dport 22 accept
-		counter packets 6 bytes 296
+		counter packets 26 bytes 6658
 	}
 
 	chain forward {
