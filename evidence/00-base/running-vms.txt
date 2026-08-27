@@ -1,0 +1,8 @@
+﻿"isprouter" {929fb1e2-55c5-4096-8da4-ac9ea1b0cf74}
+"companyrouter" {53cba5c2-e16a-4447-a8ab-894602de4b96}
+"dns" {8de9fe84-2da0-4d38-9c81-d824c738f786}
+"web" {89568c20-96dd-4337-a35c-0eb110e5a159}
+"database" {5f10be59-7ac5-4605-9c39-5de169eeb105}
+"employee" {e5bb59e0-a287-4b48-b4cc-2d279cb87b82}
+"homerouter" {5bdeb5ff-2489-458d-8b68-c7b982602994}
+"remote-employee" {0fb81a26-d09c-4f70-9ff3-09d26110dbef}

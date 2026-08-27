@@ -1,0 +1,55 @@
+
+PLAY [Ping all hosts in the inventory] *****************************************
+
+TASK [Ping the hosts] **********************************************************
+ok: [database]
+ok: [employee]
+ok: [dns]
+ok: [web]
+ok: [companyrouter]
+ok: [remote_employee]
+ok: [isprouter]
+ok: [homerouter]
+
+TASK [Ping google from each host] **********************************************
+changed: [dns]
+changed: [employee]
+changed: [database]
+changed: [web]
+changed: [companyrouter]
+changed: [isprouter]
+changed: [remote_employee]
+changed: [homerouter]
+
+PLAY [Check if a website is reachable] *****************************************
+
+TASK [Check if the website is reachable] ***************************************
+ok: [isprouter]
+ok: [remote_employee]
+
+PLAY [Check MySQL login] *******************************************************
+
+TASK [Install mysql and pymysql] ***********************************************
+changed: [isprouter]
+
+TASK [Check if we can log in to MySQL] *****************************************
+ok: [isprouter]
+
+PLAY [Check MySQL login] *******************************************************
+
+TASK [Install mysql and pymysql] ***********************************************
+changed: [remote_employee]
+
+TASK [Check if we can log in to MySQL] *****************************************
+ok: [remote_employee]
+
+PLAY RECAP *********************************************************************
+companyrouter              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+database                   : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+dns                        : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+employee                   : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+homerouter                 : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+isprouter                  : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+remote_employee            : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+web                        : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

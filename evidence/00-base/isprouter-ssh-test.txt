@@ -1,0 +1,11 @@
+﻿
+
+ComputerName     : 192.168.62.254
+RemoteAddress    : 192.168.62.254
+RemotePort       : 22
+InterfaceAlias   : Ethernet 7
+SourceAddress    : 192.168.62.1
+TcpTestSucceeded : True
+
+
+

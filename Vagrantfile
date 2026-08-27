@@ -1,5 +1,5 @@
-
-HOST_ONLY_NETWORK = "vboxnet1" # Typically on Linux/Mac
+#HOST_ONLY_NETWORK = "vboxnet1" # Typically on Linux/Mac
+HOST_ONLY_NETWORK = "VirtualBox Host-Only Ethernet Adapter #2" # Windows fake internet
 #HOST_ONLY_NETWORK = "VirtualBox Host-Only Ethernet Adapter #2" # Typically on Windows
 
 Vagrant.configure("2") do |config|
