@@ -1,0 +1,341 @@
+==================================================
+CSA LAB 1 + LAB 2 - INSECURE BASELINE
+==================================================
+2026-08-27T13:50:01+00:00
+
+=== RED HOSTNAME ===
+red
+
+=== RED INTERFACES ===
+lo               UNKNOWN        127.0.0.1/8 
+eth0             UP             192.168.62.10/24 
+
+=== RED ROUTING ===
+default via 192.168.62.254 dev eth0 
+192.168.62.0/24 dev eth0 proto kernel scope link src 192.168.62.10 
+
+=== RED DNS CONFIGURATION ===
+nameserver 192.168.62.254
+
+=== INTERNAL DNS LOOKUP ===
+
+; <<>> DiG 9.18.49-1~deb12u2-Debian <<>> @192.168.62.254 www.cybersec.internal
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 26132
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;www.cybersec.internal.		IN	A
+
+;; ANSWER SECTION:
+www.cybersec.internal.	84774	IN	A	172.30.0.10
+
+;; Query time: 4 msec
+;; SERVER: 192.168.62.254#53(192.168.62.254) (UDP)
+;; WHEN: Thu Aug 27 13:50:01 UTC 2026
+;; MSG SIZE  rcvd: 66
+
+
+=== DNS ZONE TRANSFER TEST ===
+
+; <<>> DiG 9.18.49-1~deb12u2-Debian <<>> @172.30.0.4 cybersec.internal AXFR
+; (1 server found)
+;; global options: +cmd
+cybersec.internal.	86400	IN	SOA	dns.cybersec.internal. admin.cybersec.internal. 2023092301 3600 1800 1209600 86400
+cybersec.internal.	86400	IN	NS	dns.cybersec.internal.
+txt.at.cybersec.internal. 86400	IN	TXT	"Greetings from CSA team!"
+dns.cybersec.internal.	86400	IN	A	172.30.0.4
+www.cybersec.internal.	86400	IN	A	172.30.0.10
+cybersec.internal.	86400	IN	SOA	dns.cybersec.internal. admin.cybersec.internal. 2023092301 3600 1800 1209600 86400
+;; Query time: 0 msec
+;; SERVER: 172.30.0.4#53(172.30.0.4) (TCP)
+;; WHEN: Thu Aug 27 13:50:02 UTC 2026
+;; XFR size: 6 records (messages 1, bytes 267)
+
+
+=== DEFAULT NMAP SCAN OF ALL LAB MACHINES ===
+Starting Nmap 7.93 ( https://nmap.org ) at 2026-08-27 13:50 UTC
+Nmap scan report for 192.168.62.253
+Host is up (0.00013s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT    STATE SERVICE
+22/tcp  open  ssh
+111/tcp open  rpcbind
+MAC Address: 08:00:27:F8:7C:23 (Oracle VirtualBox virtual NIC)
+
+Nmap scan report for 192.168.62.254
+Host is up (0.00029s latency).
+Not shown: 998 filtered tcp ports (no-response)
+PORT   STATE SERVICE
+22/tcp open  ssh
+53/tcp open  domain
+MAC Address: 08:00:27:EB:A8:5F (Oracle VirtualBox virtual NIC)
+
+Nmap scan report for 192.168.62.42
+Host is up (0.000096s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT    STATE SERVICE
+22/tcp  open  ssh
+111/tcp open  rpcbind
+MAC Address: 08:00:27:85:60:46 (Oracle VirtualBox virtual NIC)
+
+Nmap scan report for 172.30.0.4
+Host is up (0.00043s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+53/tcp open  domain
+
+Nmap scan report for 172.30.0.10
+Host is up (0.00044s latency).
+Not shown: 995 closed tcp ports (reset)
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+8000/tcp open  http-alt
+9200/tcp open  wap-wsp
+
+Nmap scan report for 172.30.0.15
+Host is up (0.00044s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT     STATE SERVICE
+22/tcp   open  ssh
+3306/tcp open  mysql
+
+Nmap scan report for 172.30.0.123
+Host is up (0.00043s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap scan report for 172.10.10.254
+Host is up (0.00026s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT    STATE SERVICE
+22/tcp  open  ssh
+111/tcp open  rpcbind
+
+Nmap scan report for 172.10.10.123
+Host is up (0.00040s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT    STATE SERVICE
+22/tcp  open  ssh
+111/tcp open  rpcbind
+
+Nmap done: 9 IP addresses (9 hosts up) scanned in 6.17 seconds
+
+=== SERVICE AND DEFAULT SCRIPT ENUMERATION ===
+Starting Nmap 7.93 ( https://nmap.org ) at 2026-08-27 13:50 UTC
+Nmap scan report for 192.168.62.253
+Host is up (0.00026s latency).
+
+PORT     STATE  SERVICE  VERSION
+22/tcp   open   ssh      OpenSSH 8.7 (protocol 2.0)
+| ssh-hostkey: 
+|   256 950a705e2e18041b120755a42a3aca6a (ECDSA)
+|_  256 725dbb171cfb7ca00fe0c89c13ada420 (ED25519)
+53/tcp   closed domain
+80/tcp   closed http
+443/tcp  closed https
+3306/tcp closed mysql
+8000/tcp closed http-alt
+MAC Address: 08:00:27:F8:7C:23 (Oracle VirtualBox virtual NIC)
+
+WARNING: Service 172.30.0.10:8000 had already soft-matched rtsp, but now soft-matched sip; ignoring second value
+Nmap scan report for 172.30.0.4
+Host is up (0.00053s latency).
+
+PORT     STATE  SERVICE  VERSION
+22/tcp   open   ssh      OpenSSH 9.3 (protocol 2.0)
+| ssh-hostkey: 
+|   256 620e99f0debd756a681e4838ab8c90ef (ECDSA)
+|_  256 aed80c5b601a29870db43251a4bbc94c (ED25519)
+53/tcp   open   domain   ISC BIND 9.18.37
+| dns-nsid: 
+|_  bind.version: 9.18.37
+80/tcp   closed http
+443/tcp  closed https
+3306/tcp closed mysql
+8000/tcp closed http-alt
+
+Nmap scan report for 172.30.0.10
+Host is up (0.00056s latency).
+
+PORT     STATE  SERVICE VERSION
+22/tcp   open   ssh     OpenSSH 8.7 (protocol 2.0)
+| ssh-hostkey: 
+|   256 88ddbb153e1f388686791c3ba525cb99 (ECDSA)
+|_  256 f908a75f67323ba36b156e21aded0dbc (ED25519)
+53/tcp   closed domain
+80/tcp   open   http    Apache httpd 2.4.62 ((AlmaLinux))
+|_http-title: Welcome to Example Test Environment
+|_http-server-header: Apache/2.4.62 (AlmaLinux)
+| http-methods: 
+|_  Potentially risky methods: TRACE
+443/tcp  closed https
+3306/tcp closed mysql
+8000/tcp open   rtsp
+|_http-title: Command Injection
+|_rtsp-methods: ERROR: Script execution failed (use -d to debug)
+| fingerprint-strings: 
+|   FourOhFourRequest, HTTPOptions: 
+|     HTTP/1.0 404 Not Found
+|     content-type: text/html; charset=utf-8
+|     content-length: 53
+|     <html><body><h1>Resource not found</h1></body></html>
+|   GetRequest: 
+|     HTTP/1.0 200 OK
+|     accept-ranges: bytes
+|     content-length: 577
+|     cache-control: public, immutable, max-age=86400
+|     last-modified: Thu, 27 Aug 2026 13:33:03 GMT
+|     date: Thu, 27 Aug 2026 13:50:16 GMT
+|     content-type: text/html;charset=UTF-8
+|     <!DOCTYPE html>
+|     <html lang="en">
+|     <head>
+|     <meta charset="UTF-8">
+|     <title>Command Injection</title>
+|     <script src="assets/javascript/index.js"></script>
+|     </head>
+|     <body>
+|     <h1>Command Injection</h1>
+|     <form id="ping">
+|     <h2>Ping a device</h2>
+|     <label for="ip">Enter an IP address</label>
+|     <input id="ip" type="text"/>
+|     <input type="submit" value="PING">
+|     </form>
+|     <form id="exec">
+|     <h2>Execute a command</h2>
+|     <label for="cmd">Enter a command</label>
+|     <input id="cmd" type="text"/>
+|     <input type="submit" value="EXEC">
+|     </form>
+|     <pre></pre>
+|     </body>
+|     </html>
+|   RTSPRequest: 
+|     RTSP/1.0 501 Not Implemented
+|     content-length: 0
+|   SIPOptions: 
+|     SIP/2.0 501 Not Implemented
+|     content-length: 0
+|   Socks5: 
+|     HTTP/1.0 400 Bad Request
+|_    content-length: 0
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port8000-TCP:V=7.93%I=7%D=8/27%Time=6A90409C%P=x86_64-pc-linux-gnu%r(Ge
+SF:tRequest,32A,"HTTP/1\.0\x20200\x20OK\r\naccept-ranges:\x20bytes\r\ncont
+SF:ent-length:\x20577\r\ncache-control:\x20public,\x20immutable,\x20max-ag
+SF:e=86400\r\nlast-modified:\x20Thu,\x2027\x20Aug\x202026\x2013:33:03\x20G
+SF:MT\r\ndate:\x20Thu,\x2027\x20Aug\x202026\x2013:50:16\x20GMT\r\ncontent-
+SF:type:\x20text/html;charset=UTF-8\r\n\r\n<!DOCTYPE\x20html>\n<html\x20la
+SF:ng=\"en\">\n<head>\n\x20\x20\x20\x20<meta\x20charset=\"UTF-8\">\n\x20\x
+SF:20\x20\x20<title>Command\x20Injection</title>\n\x20\x20\x20\x20<script\
+SF:x20src=\"assets/javascript/index\.js\"></script>\n</head>\n<body>\n<h1>
+SF:Command\x20Injection</h1>\n<form\x20id=\"ping\">\n\x20\x20\x20\x20<h2>P
+SF:ing\x20a\x20device</h2>\n\x20\x20\x20\x20<label\x20for=\"ip\">Enter\x20
+SF:an\x20IP\x20address</label>\n\x20\x20\x20\x20<input\x20id=\"ip\"\x20typ
+SF:e=\"text\"/>\n\x20\x20\x20\x20<input\x20type=\"submit\"\x20value=\"PING
+SF:\">\n</form>\n\n<form\x20id=\"exec\">\n\x20\x20\x20\x20<h2>Execute\x20a
+SF:\x20command</h2>\n\x20\x20\x20\x20<label\x20for=\"cmd\">Enter\x20a\x20c
+SF:ommand</label>\n\x20\x20\x20\x20<input\x20id=\"cmd\"\x20type=\"text\"/>
+SF:\n\x20\x20\x20\x20<input\x20type=\"submit\"\x20value=\"EXEC\">\n</form>
+SF:\n\n<pre></pre>\n</body>\n</html>\n")%r(FourOhFourRequest,8B,"HTTP/1\.0
+SF:\x20404\x20Not\x20Found\r\ncontent-type:\x20text/html;\x20charset=utf-8
+SF:\r\ncontent-length:\x2053\r\n\r\n<html><body><h1>Resource\x20not\x20fou
+SF:nd</h1></body></html>")%r(Socks5,2F,"HTTP/1\.0\x20400\x20Bad\x20Request
+SF:\r\ncontent-length:\x200\r\n\r\n")%r(HTTPOptions,8B,"HTTP/1\.0\x20404\x
+SF:20Not\x20Found\r\ncontent-type:\x20text/html;\x20charset=utf-8\r\nconte
+SF:nt-length:\x2053\r\n\r\n<html><body><h1>Resource\x20not\x20found</h1></
+SF:body></html>")%r(RTSPRequest,33,"RTSP/1\.0\x20501\x20Not\x20Implemented
+SF:\r\ncontent-length:\x200\r\n\r\n")%r(SIPOptions,32,"SIP/2\.0\x20501\x20
+SF:Not\x20Implemented\r\ncontent-length:\x200\r\n\r\n");
+
+Nmap scan report for 172.30.0.15
+Host is up (0.00070s latency).
+
+PORT     STATE  SERVICE  VERSION
+22/tcp   open   ssh      OpenSSH 9.3 (protocol 2.0)
+| ssh-hostkey: 
+|   256 24f6c2266e83b2f78bd4fe347af461ba (ECDSA)
+|_  256 8e05b54b21b920279973da7185317c3c (ED25519)
+53/tcp   closed domain
+80/tcp   closed http
+443/tcp  closed https
+3306/tcp open   mysql    MySQL 5.5.5-10.11.11-MariaDB
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.5.5-10.11.11-MariaDB
+|   Thread ID: 20
+|   Capabilities flags: 63486
+|   Some Capabilities: FoundRows, Support41Auth, ODBCClient, SupportsTransactions, LongColumnFlag, DontAllowDatabaseTableColumn, SupportsCompression, IgnoreSigpipes, Speaks41ProtocolOld, ConnectWithDatabase, InteractiveClient, Speaks41ProtocolNew, IgnoreSpaceBeforeParenthesis, SupportsLoadDataLocal, SupportsAuthPlugins, SupportsMultipleStatments, SupportsMultipleResults
+|   Status: Autocommit
+|   Salt: "q6X9QmR1?(K}Y#>Q^cU
+|_  Auth Plugin Name: mysql_native_password
+8000/tcp closed http-alt
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 4 IP addresses (4 hosts up) scanned in 30.89 seconds
+
+=== INSECURE DATABASE LOGIN ===
+VERSION()
+10.11.11-MariaDB
+Database
+db_services
+information_schema
+mysql
+performance_schema
+sys
+test
+
+=== DEFAULT VAGRANT SSH CREDENTIALS ===
+Warning: Permanently added '192.168.62.253' (ED25519) to the list of known hosts.
+companyrouter
+uid=1000(vagrant) gid=1000(vagrant) groups=1000(vagrant) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+=== PUBLIC WEBSITE ===
+URL: http://www.cybersec.internal/
+HTTP status: 200
+Server: {"date":["Thu, 27 Aug 2026 13:50:34 GMT"],
+"server":["Apache/2.4.62 (AlmaLinux)"],
+"last-modified":["Thu, 27 Aug 2026 12:29:52 GMT"],
+"etag":["\"58f-65a067e20db71\""],
+"accept-ranges":["bytes"],
+"content-length":["1423"],
+"content-type":["text/html; charset=UTF-8"]
+}
+
+=== INSECURE CMD APPLICATION PAGE ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Command Injection</title>
+    <script src="assets/javascript/index.js"></script>
+</head>
+<body>
+<h1>Command Injection</h1>
+<form id="ping">
+    <h2>Ping a device</h2>
+    <label for="ip">Enter an IP address</label>
+    <input id="ip" type="text"/>
+    <input type="submit" value="PING">
+</form>
+
+<form id="exec">
+    <h2>Execute a command</h2>
+    <label for="cmd">Enter a command</label>
+    <input id="cmd" type="text"/>
+    <input type="submit" value="EXEC">
+</form>
+
+<pre></pre>
+</body>
+</html>
