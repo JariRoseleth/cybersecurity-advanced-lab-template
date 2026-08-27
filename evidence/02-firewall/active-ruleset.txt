@@ -1,0 +1,27 @@
+﻿table inet csa_firewall {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		iifname "lo" accept
+		iifname "eth1" ip saddr { 192.168.62.1, 192.168.62.254 } ip protocol icmp accept
+		iifname "eth2" ip protocol icmp accept
+		iifname "eth1" ip saddr { 192.168.62.1, 192.168.62.254 } tcp dport 22 accept
+		iifname "eth2" tcp dport 22 accept
+		counter packets 6 bytes 296
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		iifname "eth2" oifname "eth1" accept
+		iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 tcp dport 22 accept
+		iifname "eth1" oifname "eth2" ip daddr 172.30.0.10 tcp dport 80 accept
+		counter packets 19 bytes 916
+	}
+
+	chain output {
+		type filter hook output priority filter; policy accept;
+	}
+}

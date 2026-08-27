@@ -1,0 +1,60 @@
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet csa_firewall {
+
+    chain input {
+        type filter hook input priority 0;
+        policy drop;
+
+        # Verwijder ongeldige pakketten.
+        ct state invalid drop
+
+        # Behoud bestaande verbindingen, waaronder de actieve SSH-sessie.
+        ct state established,related accept
+
+        # Lokale processen mogen via loopback communiceren.
+        iifname "lo" accept
+
+        # De Windows-host en isprouter mogen companyrouter pingen.
+        iifname "eth1" ip saddr { 192.168.62.1, 192.168.62.254 } ip protocol icmp accept
+
+        # Interne machines mogen de router pingen.
+        iifname "eth2" ip protocol icmp accept
+
+        # Alleen de Windows-host en isprouter mogen extern via SSH beheren.
+        iifname "eth1" ip saddr { 192.168.62.1, 192.168.62.254 } tcp dport 22 accept
+
+        # Interne beheertoegang tot de router blijft toegestaan.
+        iifname "eth2" tcp dport 22 accept
+
+        # Tel verkeer dat uiteindelijk door de default policy wordt gedropt.
+        counter
+    }
+
+    chain forward {
+        type filter hook forward priority 0;
+        policy drop;
+
+        ct state invalid drop
+        ct state established,related accept
+
+        # Bedrijfsmachines mogen naar fake internet en echt internet.
+        iifname "eth2" oifname "eth1" accept
+
+        # isprouter mag de interne machines via SSH beheren voor Ansible.
+        iifname "eth1" oifname "eth2" ip saddr 192.168.62.254 tcp dport 22 accept
+
+        # Vanaf fake internet is alleen de publieke website bereikbaar.
+        iifname "eth1" oifname "eth2" ip daddr 172.30.0.10 tcp dport 80 accept
+
+        # Alle overige forwarding wordt door de default policy gedropt.
+        counter
+    }
+
+    chain output {
+        type filter hook output priority 0;
+        policy accept;
+    }
+}

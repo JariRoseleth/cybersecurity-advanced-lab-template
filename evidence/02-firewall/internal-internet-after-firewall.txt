@@ -1,0 +1,28 @@
+dns | CHANGED | rc=0 >>
+PING 1.1.1.1 (1.1.1.1): 56 data bytes
+64 bytes from 1.1.1.1: seq=0 ttl=42 time=18.089 ms
+
+--- 1.1.1.1 ping statistics ---
+1 packets transmitted, 1 packets received, 0% packet loss
+round-trip min/avg/max = 18.089/18.089/18.089 ms
+employee | CHANGED | rc=0 >>
+PING 1.1.1.1 (1.1.1.1): 56 data bytes
+64 bytes from 1.1.1.1: seq=0 ttl=42 time=15.615 ms
+
+--- 1.1.1.1 ping statistics ---
+1 packets transmitted, 1 packets received, 0% packet loss
+round-trip min/avg/max = 15.615/15.615/15.615 ms
+database | CHANGED | rc=0 >>
+PING 1.1.1.1 (1.1.1.1): 56 data bytes
+64 bytes from 1.1.1.1: seq=0 ttl=42 time=20.916 ms
+
+--- 1.1.1.1 ping statistics ---
+1 packets transmitted, 1 packets received, 0% packet loss
+round-trip min/avg/max = 20.916/20.916/20.916 ms
+web | CHANGED | rc=0 >>
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=253 time=15.2 ms
+
+--- 1.1.1.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 15.197/15.197/15.197/0.000 ms

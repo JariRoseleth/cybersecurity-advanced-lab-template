@@ -1,0 +1,64 @@
+==================================================
+CSA LAB 2 - FIREWALL VALIDATION
+==================================================
+2026-08-27T14:16:31+00:00
+
+=== PUBLIC WEBSITE MUST STILL WORK ===
+HTTP status: 200
+
+=== WEB PORTS: 80 OPEN, OTHERS FILTERED ===
+Starting Nmap 7.93 ( https://nmap.org ) at 2026-08-27 14:16 UTC
+Nmap scan report for 172.30.0.10
+Host is up, received user-set (0.00066s latency).
+
+PORT     STATE    SERVICE  REASON
+22/tcp   filtered ssh      no-response
+80/tcp   open     http     syn-ack ttl 63
+666/tcp  filtered doom     no-response
+8000/tcp filtered http-alt no-response
+
+Nmap done: 1 IP address (1 host up) scanned in 1.28 seconds
+
+=== DNS SHOULD BE FILTERED ===
+Starting Nmap 7.93 ( https://nmap.org ) at 2026-08-27 14:16 UTC
+Nmap scan report for 172.30.0.4
+Host is up, received user-set.
+
+PORT   STATE    SERVICE REASON
+22/tcp filtered ssh     no-response
+53/tcp filtered domain  no-response
+
+Nmap done: 1 IP address (1 host up) scanned in 3.17 seconds
+
+=== DATABASE SHOULD BE FILTERED ===
+Starting Nmap 7.93 ( https://nmap.org ) at 2026-08-27 14:16 UTC
+Nmap scan report for 172.30.0.15
+Host is up, received user-set.
+
+PORT     STATE    SERVICE REASON
+22/tcp   filtered ssh     no-response
+3306/tcp filtered mysql   no-response
+
+Nmap done: 1 IP address (1 host up) scanned in 3.29 seconds
+
+=== COMPANYROUTER SSH SHOULD BE FILTERED FOR RED ===
+Starting Nmap 7.93 ( https://nmap.org ) at 2026-08-27 14:16 UTC
+Nmap scan report for 192.168.62.253
+Host is up, received arp-response (0.00031s latency).
+
+PORT    STATE    SERVICE REASON
+22/tcp  filtered ssh     no-response
+111/tcp filtered rpcbind no-response
+MAC Address: 08:00:27:F8:7C:23 (Oracle VirtualBox virtual NIC)
+
+Nmap done: 1 IP address (1 host up) scanned in 1.47 seconds
+
+=== ZONE TRANSFER SHOULD FAIL ===
+;; Connection to 172.30.0.4#53(172.30.0.4) for cybersec.internal failed: timed out.
+;; no servers could be reached
+
+=== DIRECT MYSQL LOGIN SHOULD FAIL ===
+ERROR 2002 (HY000): Can't connect to server on '172.30.0.15' (110)
+
+=== DIRECT SSH WITH VAGRANT CREDENTIALS SHOULD FAIL ===
+ssh: connect to host 192.168.62.253 port 22: Connection timed out
