@@ -15,6 +15,7 @@ fake_internet:
   hosts:
     companyrouter:
       ansible_host: 192.168.62.253
+      ansible_port: 2222
     isprouter:
       ansible_host: 192.168.62.254
     # red:

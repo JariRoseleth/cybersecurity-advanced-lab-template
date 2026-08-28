@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+LABEL="${1:?Usage: csa-lab8-router-capture LABEL [SECONDS]}"
+DURATION="${2:-25}"
+BASE="/tmp/csa-lab8-${LABEL}-companyrouter"
+PCAP="${BASE}.pcap"
+LOG="${BASE}.log"
+READY="${BASE}.ready"
+DONE="${BASE}.done"
+PID_FILE="${BASE}.pid"
+
+WAN_IF="$(
+    ip -o -4 address show |
+        awk 'index($4, "192.168.62.253/") == 1 { print $2; exit }'
+)"
+
+if [[ -z "$WAN_IF" ]]; then
+    echo 'Could not locate the companyrouter fake-internet interface.' >&2
+    exit 1
+fi
+
+rm -f "$PCAP" "$LOG" "$READY" "$DONE" "$PID_FILE"
+
+cleanup() {
+    if [[ -f "$PID_FILE" ]]; then
+        capture_pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+        if [[ -n "$capture_pid" ]] && kill -0 "$capture_pid" 2>/dev/null; then
+            kill -INT "$capture_pid" 2>/dev/null || true
+            wait "$capture_pid" 2>/dev/null || true
+        fi
+    fi
+
+    chmod 0644 "$PCAP" "$LOG" 2>/dev/null || true
+    touch "$DONE"
+    chmod 0644 "$READY" "$DONE" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
+
+FILTER='(net 172.10.10.0/24 and net 172.30.0.0/16) or (host 192.168.62.42 and host 192.168.62.253) or esp'
+
+tcpdump \
+    -i "$WAN_IF" \
+    -nn \
+    -U \
+    -s 0 \
+    -w "$PCAP" \
+    "$FILTER" \
+    >"$LOG" 2>&1 &
+
+capture_pid="$!"
+echo "$capture_pid" > "$PID_FILE"
+touch "$READY"
+chmod 0644 "$READY" "$PID_FILE"
+
+for ((second = 0; second < DURATION; second++)); do
+    kill -0 "$capture_pid" 2>/dev/null || break
+    sleep 1
+done

@@ -1,0 +1,17 @@
+﻿Current machine states:
+
+companyrouter             poweroff (virtualbox)
+dns                       poweroff (virtualbox)
+web                       running (virtualbox)
+database                  poweroff (virtualbox)
+employee                  poweroff (virtualbox)
+isprouter                 poweroff (virtualbox)
+homerouter                poweroff (virtualbox)
+remote-employee           poweroff (virtualbox)
+siem                      running (virtualbox)
+lab7-linux                poweroff (virtualbox)
+lab7-windows              running (virtualbox)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run `vagrant status NAME`.

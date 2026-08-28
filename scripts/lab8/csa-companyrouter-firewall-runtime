@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+MODE="${1:-secure}"
+FAMILY='inet'
+TABLE='csa_firewall'
+
+if ! nft list table "$FAMILY" "$TABLE" >/dev/null 2>&1; then
+    if [[ -r /etc/nftables/csa-firewall.nft ]]; then
+        nft --file /etc/nftables/csa-firewall.nft
+    else
+        echo 'The csa_firewall table is absent and no persistent config is available.' >&2
+        exit 1
+    fi
+fi
+
+delete_marked_rules() {
+    local chain="$1"
+
+    while read -r handle; do
+        [[ -n "$handle" ]] || continue
+        nft delete rule "$FAMILY" "$TABLE" "$chain" handle "$handle"
+    done < <(
+        nft -a list chain "$FAMILY" "$TABLE" "$chain" |
+            awk '/comment "CSA-LAB8/ {
+                for (i = 1; i <= NF; i++) {
+                    if ($i == "handle") {
+                        print $(i + 1)
+                    }
+                }
+            }' |
+            sort -rn
+    )
+}
+
+for chain in input forward output; do
+    delete_marked_rules "$chain"
+done
+
+if [[ "$MODE" == 'cleanup' ]]; then
+    echo 'Removed runtime CSA Lab 8 rules.'
+    exit 0
+fi
+
+if [[ "$MODE" == 'baseline' ]]; then
+    nft insert rule "$FAMILY" "$TABLE" input \
+        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 \
+        accept comment '"CSA-LAB8-BASELINE-IN"'
+
+    nft insert rule "$FAMILY" "$TABLE" output \
+        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 \
+        accept comment '"CSA-LAB8-BASELINE-OUT"'
+
+    nft insert rule "$FAMILY" "$TABLE" forward \
+        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 \
+        accept comment '"CSA-LAB8-BASELINE-C2H"'
+
+    nft insert rule "$FAMILY" "$TABLE" forward \
+        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 \
+        accept comment '"CSA-LAB8-BASELINE-H2C"'
+
+    echo 'Installed temporary plaintext baseline rules.'
+    exit 0
+fi
+
+if [[ "$MODE" != 'secure' ]]; then
+    echo "Usage: $0 baseline|secure|cleanup" >&2
+    exit 2
+fi
+
+# Each "insert rule" becomes the new first rule. Commands are therefore issued
+# in reverse order where two rules match the same traffic.
+
+# INPUT final order:
+#   accept ESP from homerouter
+#   reject ESP from every other peer
+#   accept decrypted H2C traffic
+#   drop matching plaintext
+nft insert rule "$FAMILY" "$TABLE" input \
+    ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 \
+    drop comment '"CSA-LAB8-PLAIN-H2C-IN-DROP"'
+nft insert rule "$FAMILY" "$TABLE" input \
+    ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 \
+    ipsec in reqid 8001 \
+    accept comment '"CSA-LAB8-IPSEC-H2C-IN"'
+nft insert rule "$FAMILY" "$TABLE" input \
+    ip protocol esp \
+    drop comment '"CSA-LAB8-ESP-OTHER-IN-DROP"'
+nft insert rule "$FAMILY" "$TABLE" input \
+    ip saddr 192.168.62.42 ip daddr 192.168.62.253 ip protocol esp \
+    accept comment '"CSA-LAB8-ESP-PEER-IN"'
+
+# FORWARD final order:
+#   encrypted H2C allow, plaintext H2C drop,
+#   encrypted C2H allow, plaintext C2H drop.
+nft insert rule "$FAMILY" "$TABLE" forward \
+    ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 \
+    drop comment '"CSA-LAB8-PLAIN-C2H-FWD-DROP"'
+nft insert rule "$FAMILY" "$TABLE" forward \
+    ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 \
+    ipsec out reqid 8002 \
+    accept comment '"CSA-LAB8-IPSEC-C2H-FWD"'
+nft insert rule "$FAMILY" "$TABLE" forward \
+    ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 \
+    drop comment '"CSA-LAB8-PLAIN-H2C-FWD-DROP"'
+nft insert rule "$FAMILY" "$TABLE" forward \
+    ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 \
+    ipsec in reqid 8001 \
+    accept comment '"CSA-LAB8-IPSEC-H2C-FWD"'
+
+# OUTPUT final order: encrypted C2H allow, plaintext C2H drop.
+nft insert rule "$FAMILY" "$TABLE" output \
+    ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 \
+    drop comment '"CSA-LAB8-PLAIN-C2H-OUT-DROP"'
+nft insert rule "$FAMILY" "$TABLE" output \
+    ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 \
+    ipsec out reqid 8002 \
+    accept comment '"CSA-LAB8-IPSEC-C2H-OUT"'
+
+echo 'Installed secure, fail-closed runtime IPsec rules.'

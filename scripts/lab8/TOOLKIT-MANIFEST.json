@@ -1,0 +1,41 @@
+{
+  "artifact": "CSA Lab 8 IPsec Toolkit",
+  "required_files_present": true,
+  "real_key_material_included": false,
+  "bash_syntax_validation": {
+    "configs/ipsec/csa-homerouter-firewall-apply": "passed",
+    "configs/ipsec/csa-ipsec-apply": "passed",
+    "configs/ipsec/csa-ipsec-clear": "passed",
+    "configs/ipsec/csa-lab8-routing": "passed",
+    "scripts/lab8/csa-companyrouter-firewall-runtime": "passed",
+    "scripts/lab8/csa-lab8-red-capture": "passed",
+    "scripts/lab8/csa-lab8-router-capture": "passed",
+    "scripts/lab8/csa-lab8-test-traffic": "passed"
+  },
+  "powershell_structural_validation": {
+    "scripts/lab8/Invoke-CSA-Lab8.ps1": {
+      "lines": 1075,
+      "balanced_delimiters": true,
+      "here_strings_closed": true,
+      "ascii_only": true
+    },
+    "scripts/lab8/Patch-CompanyRouterFirewall.ps1": {
+      "lines": 129,
+      "balanced_delimiters": true,
+      "here_strings_closed": true,
+      "ascii_only": true
+    },
+    "scripts/lab8/Rollback-CSA-Lab8.ps1": {
+      "lines": 109,
+      "balanced_delimiters": true,
+      "here_strings_closed": true,
+      "ascii_only": true
+    }
+  },
+  "powershell_official_parser": "Not present in the build runtime.",
+  "firewall_rule_order_checks": "passed in the preceding validation run",
+  "remote_employee_package_managers": [
+    "dnf",
+    "apk"
+  ]
+}

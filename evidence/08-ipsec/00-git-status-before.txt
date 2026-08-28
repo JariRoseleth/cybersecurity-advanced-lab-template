@@ -1,0 +1,13 @@
+﻿ M Vagrantfile
+ M ansible/inventory.yml
+ M configs/ssh/client-config.example
+?? README-LAB8.md
+?? configs/honeypot/
+?? configs/ipsec/
+?? configs/wazuh/
+?? evidence/04-honeypot/
+?? evidence/07-siem/
+?? evidence/08-ipsec/
+?? evidence/09-openvpn/
+?? scripts/lab7/
+?? scripts/lab8/

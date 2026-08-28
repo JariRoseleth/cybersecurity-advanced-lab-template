@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+ROLE="${1:?Usage: csa-lab8-test-traffic remote|company|home}"
+
+echo "=================================================="
+echo "CSA LAB 8 TRAFFIC TEST - ${ROLE}"
+echo "=================================================="
+date -Is
+hostname
+ip -br address
+ip route
+
+case "$ROLE" in
+    remote)
+        echo
+        echo '=== REMOTE EMPLOYEE TO COMPANY WEB ==='
+        ping -c 3 -W 2 172.30.0.10
+        if ! curl -kfsSL \
+            --max-time 10 \
+            --output /dev/null \
+            --write-out 'HTTP final status: %{http_code}\n' \
+            http://172.30.0.10/
+        then
+            curl -kfsSL \
+                --max-time 10 \
+                --output /dev/null \
+                --write-out 'HTTPS final status: %{http_code}\n' \
+                https://172.30.0.10/
+        fi
+
+        echo
+        echo '=== REMOTE EMPLOYEE TO COMPANY ROUTER ==='
+        ping -c 3 -W 2 172.30.255.254
+        ;;
+    company)
+        echo
+        echo '=== COMPANY ROUTER TO REMOTE EMPLOYEE ==='
+        ping -I 172.30.255.254 -c 3 -W 2 172.10.10.123
+        ;;
+    home)
+        echo
+        echo '=== HOME ROUTER TO COMPANY WEB ==='
+        ping -I 172.10.10.254 -c 3 -W 2 172.30.0.10
+        ;;
+    *)
+        echo "Unsupported role: $ROLE" >&2
+        exit 2
+        ;;
+esac

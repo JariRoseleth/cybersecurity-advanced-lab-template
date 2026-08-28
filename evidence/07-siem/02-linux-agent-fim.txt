@@ -1,0 +1,41 @@
+==================================================
+CSA LAB 7 - LINUX AGENT AND FILE INTEGRITY MONITORING
+==================================================
+Generated: 2026-08-28T00:22:47.5528694+02:00
+
+Endpoint: lab7-linux
+Endpoint IP: 172.30.0.21
+Manager IP: 172.30.0.20
+FIM directory: /home/vagrant/lab7-fim
+
+=== REGISTERED AGENTS ===
+
+Wazuh agent_control. List of available agents:
+   ID: 000, Name: siem (server), IP: 127.0.0.1, Active/Local
+   ID: 001, Name: lab7-linux, IP: any, Active
+
+
+=== ENDPOINT CONFIGURATION ===
+active
+
+      <enabled>yes</enabled>
+      <interval>5m</interval>
+      <max_eps>10</max_eps>
+    </synchronization>
+    <directories realtime="yes" check_all="yes" report_changes="yes">/home/vagrant/lab7-fim</directories>
+  </syscheck>
+
+  <!-- Log analysis -->
+  <localfile>
+
+=== FIM ALERTS ===
+Timestamp	Event	Path	RuleID	Description
+2026-08-28T00:18:11.719+0200	added	/home/vagrant/lab7-fim/created.txt	554	File added to the system.
+2026-08-28T00:18:15.723+0200	added	/home/vagrant/lab7-fim/modified.txt	554	File added to the system.
+2026-08-28T00:18:19.732+0200	modified	/home/vagrant/lab7-fim/modified.txt	550	Integrity checksum changed.
+2026-08-28T00:18:23.731+0200	added	/home/vagrant/lab7-fim/deleted.txt	554	File added to the system.
+2026-08-28T00:18:27.725+0200	deleted	/home/vagrant/lab7-fim/deleted.txt	553	File deleted.
+2026-08-28T00:22:01.339+0200	added	/home/vagrant/lab7-fim/fim-livefix.txt	554	File added to the system.
+2026-08-28T00:22:06.347+0200	modified	/home/vagrant/lab7-fim/fim-livefix.txt	550	Integrity checksum changed.
+2026-08-28T00:22:11.344+0200	added	/home/vagrant/lab7-fim/fim-delete.txt	554	File added to the system.
+2026-08-28T00:22:16.340+0200	deleted	/home/vagrant/lab7-fim/fim-delete.txt	553	File deleted.

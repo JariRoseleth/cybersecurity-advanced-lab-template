@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+ENV_FILE='/etc/csa-ipsec.env'
+
+if [[ ! -r "$ENV_FILE" ]]; then
+    echo "Missing or unreadable secret file: $ENV_FILE" >&2
+    exit 1
+fi
+
+# shellcheck disable=SC1090
+source "$ENV_FILE"
+
+required_variables=(
+    CSA_HOME_WAN
+    CSA_COMPANY_WAN
+    CSA_HOME_NET
+    CSA_COMPANY_NET
+    CSA_H2C_SPI
+    CSA_C2H_SPI
+    CSA_H2C_REQID
+    CSA_C2H_REQID
+    CSA_H2C_AUTH_KEY
+    CSA_H2C_ENC_KEY
+    CSA_C2H_AUTH_KEY
+    CSA_C2H_ENC_KEY
+)
+
+for variable in "${required_variables[@]}"; do
+    if [[ -z "${!variable:-}" ]]; then
+        echo "Required variable is empty: $variable" >&2
+        exit 1
+    fi
+done
+
+for key_variable in \
+    CSA_H2C_AUTH_KEY \
+    CSA_H2C_ENC_KEY \
+    CSA_C2H_AUTH_KEY \
+    CSA_C2H_ENC_KEY
+do
+    key="${!key_variable}"
+    if [[ ! "$key" =~ ^[0-9a-fA-F]{64}$ ]]; then
+        echo "$key_variable must contain exactly 64 hexadecimal characters." >&2
+        exit 1
+    fi
+done
+
+case "$(hostname -s)" in
+    homerouter|companyrouter) ;;
+    *)
+        echo "Unsupported host: $(hostname -s)" >&2
+        exit 1
+        ;;
+esac
+
+/usr/local/sbin/csa-lab8-routing
+
+ip xfrm policy flush
+ip xfrm state flush
+
+ip xfrm state add \
+    src "$CSA_HOME_WAN" \
+    dst "$CSA_COMPANY_WAN" \
+    proto esp \
+    spi "$CSA_H2C_SPI" \
+    reqid "$CSA_H2C_REQID" \
+    mode tunnel \
+    auth-trunc 'hmac(sha256)' "0x${CSA_H2C_AUTH_KEY}" 128 \
+    enc 'cbc(aes)' "0x${CSA_H2C_ENC_KEY}"
+
+ip xfrm state add \
+    src "$CSA_COMPANY_WAN" \
+    dst "$CSA_HOME_WAN" \
+    proto esp \
+    spi "$CSA_C2H_SPI" \
+    reqid "$CSA_C2H_REQID" \
+    mode tunnel \
+    auth-trunc 'hmac(sha256)' "0x${CSA_C2H_AUTH_KEY}" 128 \
+    enc 'cbc(aes)' "0x${CSA_C2H_ENC_KEY}"
+
+if [[ "$(hostname -s)" == 'homerouter' ]]; then
+    ip xfrm policy add \
+        src "$CSA_HOME_NET" dst "$CSA_COMPANY_NET" \
+        dir out priority 100 \
+        tmpl src "$CSA_HOME_WAN" dst "$CSA_COMPANY_WAN" \
+            proto esp spi "$CSA_H2C_SPI" reqid "$CSA_H2C_REQID" mode tunnel
+
+    ip xfrm policy add \
+        src "$CSA_COMPANY_NET" dst "$CSA_HOME_NET" \
+        dir in priority 100 \
+        tmpl src "$CSA_COMPANY_WAN" dst "$CSA_HOME_WAN" \
+            proto esp spi "$CSA_C2H_SPI" reqid "$CSA_C2H_REQID" mode tunnel
+
+    ip xfrm policy add \
+        src "$CSA_COMPANY_NET" dst "$CSA_HOME_NET" \
+        dir fwd priority 100 \
+        tmpl src "$CSA_COMPANY_WAN" dst "$CSA_HOME_WAN" \
+            proto esp spi "$CSA_C2H_SPI" reqid "$CSA_C2H_REQID" mode tunnel
+else
+    ip xfrm policy add \
+        src "$CSA_HOME_NET" dst "$CSA_COMPANY_NET" \
+        dir in priority 100 \
+        tmpl src "$CSA_HOME_WAN" dst "$CSA_COMPANY_WAN" \
+            proto esp spi "$CSA_H2C_SPI" reqid "$CSA_H2C_REQID" mode tunnel
+
+    ip xfrm policy add \
+        src "$CSA_HOME_NET" dst "$CSA_COMPANY_NET" \
+        dir fwd priority 100 \
+        tmpl src "$CSA_HOME_WAN" dst "$CSA_COMPANY_WAN" \
+            proto esp spi "$CSA_H2C_SPI" reqid "$CSA_H2C_REQID" mode tunnel
+
+    ip xfrm policy add \
+        src "$CSA_COMPANY_NET" dst "$CSA_HOME_NET" \
+        dir out priority 100 \
+        tmpl src "$CSA_COMPANY_WAN" dst "$CSA_HOME_WAN" \
+            proto esp spi "$CSA_C2H_SPI" reqid "$CSA_C2H_REQID" mode tunnel
+fi
+
+state_count="$(ip xfrm state list | grep -c '^src ' || true)"
+policy_count="$(ip xfrm policy list | grep -c '^src ' || true)"
+
+if [[ "$state_count" -ne 2 ]]; then
+    echo "Expected 2 XFRM states, found $state_count." >&2
+    exit 1
+fi
+
+if [[ "$policy_count" -ne 3 ]]; then
+    echo "Expected 3 XFRM policies, found $policy_count." >&2
+    exit 1
+fi
+
+echo "Installed 2 XFRM states and 3 XFRM policies on $(hostname -s)."
+ip -s xfrm state list nokeys
+ip xfrm policy list

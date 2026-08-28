@@ -1,0 +1,4 @@
+# Controlled credentials for the isolated CSA lab only.
+# Rules are evaluated from top to bottom.
+root:x:toor
+admin:x:password123

@@ -1,4 +1,4 @@
-﻿# BEGIN CSA
+# BEGIN CSA
 
 Host companyrouter isprouter red homerouter web database dns employee remote-employee
     User vagrant
@@ -9,6 +9,7 @@ Host companyrouter isprouter red homerouter web database dns employee remote-emp
 
 Host companyrouter
     HostName 192.168.62.253
+    Port 2222
 
 Host isprouter
     HostName 192.168.62.254

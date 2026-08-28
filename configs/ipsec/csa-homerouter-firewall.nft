@@ -1,0 +1,52 @@
+#!/usr/sbin/nft -f
+
+table inet csa_homerouter {
+    chain input {
+        type filter hook input priority 0;
+        policy drop;
+
+        ct state invalid drop
+
+        ip saddr 192.168.62.253 ip daddr 192.168.62.42 ip protocol esp accept
+        ip protocol esp drop
+
+        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 ipsec in reqid 8002 accept
+        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 drop
+
+        ct state established,related accept
+        iifname "lo" accept
+
+        ip saddr { 192.168.62.1, 192.168.62.254 } tcp dport 22 accept
+        ip saddr { 192.168.62.1, 192.168.62.254 } ip protocol icmp accept
+
+        ip saddr 172.10.10.0/24 accept
+
+        counter
+    }
+
+    chain forward {
+        type filter hook forward priority 0;
+        policy drop;
+
+        ct state invalid drop
+
+        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 ipsec out reqid 8001 accept
+        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 drop
+
+        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 ipsec in reqid 8002 accept
+        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 drop
+
+        ct state established,related accept
+        ip saddr 172.10.10.0/24 accept
+
+        counter
+    }
+
+    chain output {
+        type filter hook output priority 0;
+        policy accept;
+
+        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 ipsec out reqid 8001 accept
+        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 drop
+    }
+}

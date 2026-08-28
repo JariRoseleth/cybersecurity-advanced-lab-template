@@ -1,0 +1,14 @@
+[Unit]
+Description=CSA Lab 8 manual site-to-site IPsec tunnel
+Wants=network-online.target csa-lab8-routing.service
+After=network-online.target csa-lab8-routing.service
+Before=csa-homerouter-firewall.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/csa-ipsec-apply
+ExecStop=/usr/local/sbin/csa-ipsec-clear
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

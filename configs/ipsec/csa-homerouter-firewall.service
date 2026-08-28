@@ -1,0 +1,13 @@
+[Unit]
+Description=CSA Lab 8 fail-closed firewall on homerouter
+Wants=network-online.target csa-ipsec.service
+After=network-online.target csa-ipsec.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/csa-homerouter-firewall-apply
+ExecStop=-/usr/sbin/nft delete table inet csa_homerouter
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

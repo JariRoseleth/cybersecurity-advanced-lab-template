@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+ip xfrm policy flush
+ip xfrm state flush

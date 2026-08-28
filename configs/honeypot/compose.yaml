@@ -1,0 +1,20 @@
+---
+services:
+  cowrie:
+    image: cowrie/cowrie:3.0.13
+    container_name: cowrie
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      # Operator configuration lives in etc; generated keys and audit state live in var.
+      - ./etc:/cowrie/cowrie-git/etc:Z
+      - ./var:/cowrie/cowrie-git/var:Z
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 256m

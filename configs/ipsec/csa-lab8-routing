@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+HOME_WAN='192.168.62.42'
+COMPANY_WAN='192.168.62.253'
+HOME_NET='172.10.10.0/24'
+COMPANY_NET='172.30.0.0/16'
+
+case "$(hostname -s)" in
+    homerouter)
+        WAN_ADDRESS="$HOME_WAN"
+        REMOTE_NET="$COMPANY_NET"
+        NEXT_HOP="$COMPANY_WAN"
+        ;;
+    companyrouter)
+        WAN_ADDRESS="$COMPANY_WAN"
+        REMOTE_NET="$HOME_NET"
+        NEXT_HOP="$HOME_WAN"
+        ;;
+    *)
+        echo "Unsupported host: $(hostname -s)" >&2
+        exit 1
+        ;;
+esac
+
+WAN_IF="$(
+    ip -o -4 address show |
+        awk -v address="$WAN_ADDRESS" '
+            index($4, address "/") == 1 { print $2; exit }
+        '
+)"
+
+if [[ -z "$WAN_IF" ]]; then
+    echo "Could not find the interface carrying ${WAN_ADDRESS}." >&2
+    exit 1
+fi
+
+sysctl -w net.ipv4.ip_forward=1 >/dev/null
+sysctl -w net.ipv4.conf.all.rp_filter=0 >/dev/null
+sysctl -w net.ipv4.conf.default.rp_filter=0 >/dev/null
+sysctl -w net.ipv4.conf.all.send_redirects=0 >/dev/null
+sysctl -w net.ipv4.conf.default.send_redirects=0 >/dev/null
+
+ip route replace "$REMOTE_NET" via "$NEXT_HOP" dev "$WAN_IF"
+
+echo "Host: $(hostname -s)"
+echo "WAN interface: $WAN_IF"
+echo "Route: $REMOTE_NET via $NEXT_HOP"
+ip route show "$REMOTE_NET"

@@ -1,0 +1,73 @@
+==================================================
+CSA LAB 7 - LINUX THREAT HUNTING
+==================================================
+Generated: 2026-08-28T00:24:11.9305061+02:00
+
+Endpoint: lab7-linux
+Audit key: audit-wazuh-c
+Monitored syscall: execve
+Login AUID: 1000
+
+=== ACTIVE AUDIT RULE ===
+-a always,exit -F arch=b64 -S execve -F auid=1000 -F auid!=-1 -F key=audit-wazuh-c
+
+=== TEST ACTIONS ===
+whoami
+id
+uname -r
+curl https://example.com -> /tmp/csa-lab7-example.html
+sudo dnf install tree
+tree --version
+
+=== WAZUH THREAT-HUNTING EVENTS ===
+Timestamp	Command	Executable	AUID	RuleID	Description
+2026-08-28T00:23:32.212+0200	sleep	/usr/bin/sleep	1000	80792	Audit: Command: /usr/bin/sleep.
+2026-08-28T00:23:36.182+0200	systemctl	/usr/bin/systemctl	1000	80792	Audit: Command: /usr/bin/systemctl.
+2026-08-28T00:23:36.190+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.699+0200	systemd	/usr/lib/systemd/systemd	1000	80792	Audit: Command: /usr/lib/systemd/systemd.
+2026-08-28T00:23:48.701+0200	30-systemd-envi	/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator	1000	80792	Audit: Command: /usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator.
+2026-08-28T00:23:48.705+0200	systemctl	/usr/bin/systemctl	1000	80792	Audit: Command: /usr/bin/systemctl.
+2026-08-28T00:23:48.705+0200	systemd-xdg-aut	/usr/lib/systemd/user-generators/systemd-xdg-autostart-generator	1000	80792	Audit: Command: /usr/lib/systemd/user-generators/systemd-xdg-autostart-generator.
+2026-08-28T00:23:48.707+0200	systemd-tmpfile	/usr/bin/systemd-tmpfiles	1000	80792	Audit: Command: /usr/bin/systemd-tmpfiles.
+2026-08-28T00:23:48.721+0200	bash	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:48.723+0200	grepconf.sh	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:48.727+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.729+0200	dircolors	/usr/bin/dircolors	1000	80792	Audit: Command: /usr/bin/dircolors.
+2026-08-28T00:23:48.731+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.733+0200	grepconf.sh	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:48.740+0200	grepconf.sh	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:48.740+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.740+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.742+0200	tr	/usr/bin/tr	1000	80792	Audit: Command: /usr/bin/tr.
+2026-08-28T00:23:48.744+0200	cat	/usr/bin/cat	1000	80792	Audit: Command: /usr/bin/cat.
+2026-08-28T00:23:48.746+0200	locale	/usr/bin/locale	1000	80792	Audit: Command: /usr/bin/locale.
+2026-08-28T00:23:48.748+0200	sed	/usr/bin/sed	1000	80792	Audit: Command: /usr/bin/sed.
+2026-08-28T00:23:48.750+0200	readlink	/usr/bin/readlink	1000	80792	Audit: Command: /usr/bin/readlink.
+2026-08-28T00:23:48.752+0200	basename	/usr/bin/basename	1000	80792	Audit: Command: /usr/bin/basename.
+2026-08-28T00:23:48.754+0200	bash	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:48.756+0200	id	/usr/bin/id	1000	80792	Audit: Command: /usr/bin/id.
+2026-08-28T00:23:48.758+0200	hostnamectl	/usr/bin/hostnamectl	1000	80792	Audit: Command: /usr/bin/hostnamectl.
+2026-08-28T00:23:48.766+0200	grepconf.sh	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:48.768+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.770+0200	dircolors	/usr/bin/dircolors	1000	80792	Audit: Command: /usr/bin/dircolors.
+2026-08-28T00:23:48.776+0200	grepconf.sh	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:48.776+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.776+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.778+0200	grepconf.sh	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:48.780+0200	grep	/usr/bin/grep	1000	80792	Audit: Command: /usr/bin/grep.
+2026-08-28T00:23:48.782+0200	locale	/usr/bin/locale	1000	80792	Audit: Command: /usr/bin/locale.
+2026-08-28T00:23:48.784+0200	sed	/usr/bin/sed	1000	80792	Audit: Command: /usr/bin/sed.
+2026-08-28T00:23:48.786+0200	readlink	/usr/bin/readlink	1000	80792	Audit: Command: /usr/bin/readlink.
+2026-08-28T00:23:48.788+0200	basename	/usr/bin/basename	1000	80792	Audit: Command: /usr/bin/basename.
+2026-08-28T00:23:48.795+0200	uname	/usr/bin/uname	1000	80792	Audit: Command: /usr/bin/uname.
+2026-08-28T00:23:48.795+0200	id	/usr/bin/id	1000	80792	Audit: Command: /usr/bin/id.
+2026-08-28T00:23:48.795+0200	whoami	/usr/bin/whoami	1000	80792	Audit: Command: /usr/bin/whoami.
+2026-08-28T00:23:48.797+0200	curl	/usr/bin/curl	1000	80792	Audit: Command: /usr/bin/curl.
+2026-08-28T00:23:48.799+0200	sudo	/usr/bin/sudo	1000	80792	Audit: Command: /usr/bin/sudo.
+2026-08-28T00:23:48.801+0200	unix_chkpwd	/usr/sbin/unix_chkpwd	1000	80792	Audit: Command: /usr/sbin/unix_chkpwd.
+2026-08-28T00:23:50.231+0200	rpmkeys	/usr/bin/rpmkeys	1000	80792	Audit: Command: /usr/bin/rpmkeys.
+2026-08-28T00:23:50.234+0200	sh	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:50.238+0200	ldconfig	/usr/sbin/ldconfig	1000	80792	Audit: Command: /usr/sbin/ldconfig.
+2026-08-28T00:23:50.244+0200	sh	/usr/bin/bash	1000	80792	Audit: Command: /usr/bin/bash.
+2026-08-28T00:23:50.254+0200	systemd-run	/usr/bin/systemd-run	1000	80792	Audit: Command: /usr/bin/systemd-run.
+2026-08-28T00:23:50.265+0200	tree	/usr/bin/tree	1000	80792	Audit: Command: /usr/bin/tree.

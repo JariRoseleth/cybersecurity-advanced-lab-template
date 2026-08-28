@@ -1,0 +1,35 @@
+==================================================
+CSA LAB 7 - WINDOWS SYSMON AND POWERSHELL
+==================================================
+Generated: 2026-08-28T07:37:04.4548699+02:00
+
+Endpoint: lab7-windows
+Endpoint IP: 172.30.0.22
+Manager IP: 172.30.0.20
+
+=== REGISTERED AGENTS ===
+
+Wazuh agent_control. List of available agents:
+   ID: 000, Name: siem (server), IP: 127.0.0.1, Active/Local
+   ID: 001, Name: lab7-linux, IP: any, Active
+   ID: 002, Name: lab7-windows, IP: any, Active
+
+List of agentless devices:
+
+
+=== SYSMON PROCESS CREATION ===
+Timestamp: 2026-08-28T07:23:58.034+0200
+Wazuh Rule ID: 92004
+Rule level: 4
+Windows Event ID: 1
+Channel: Microsoft-Windows-Sysmon/Operational
+Image: C:\\Windows\\System32\\cmd.exe
+CommandLine: \"C:\\Windows\\system32\\cmd.exe\" /d /c \"echo LAB7_CMD_PROCESS_MARKER &amp;&amp; whoami &amp;&amp; hostname\"
+
+=== POWERSHELL SCRIPT BLOCK LOGGING ===
+Timestamp: 2026-08-28T07:31:47.187+0200
+Wazuh Rule ID: 110071
+Rule level: 5
+Windows Event ID: 4104
+Channel: Microsoft-Windows-PowerShell/Operational
+ScriptBlock: Write-Output \"LAB7_PS4104_MARKER\"  Get-Date  Get-Service WazuhSvc | Select-Object Name,Status

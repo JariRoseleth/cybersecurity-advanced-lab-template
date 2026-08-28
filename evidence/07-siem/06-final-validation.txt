@@ -1,0 +1,44 @@
+==================================================
+CSA LAB 7 - FINAL VALIDATION
+==================================================
+Generated: 2026-08-28T07:37:10.3221729+02:00
+
+=== CENTRAL SERVICES ===
+wazuh-indexer=active
+wazuh-manager=active
+filebeat=active
+wazuh-dashboard=active
+
+=== AGENTS ===
+
+Wazuh agent_control. List of available agents:
+   ID: 000, Name: siem (server), IP: 127.0.0.1, Active/Local
+   ID: 001, Name: lab7-linux, IP: any, Active
+   ID: 002, Name: lab7-windows, IP: any, Active
+
+List of agentless devices:
+
+
+=== RESULTS ===
+Wazuh SIEM server: PASS
+Linux Wazuh agent: PASS
+Linux File Integrity Monitoring create/modify/delete: PASS
+Linux Auditd command monitoring: PASS
+Windows Wazuh agent: PASS
+Windows Sysmon Event ID 1 process creation: PASS
+Windows cmd.exe command line visible in Wazuh: PASS
+Windows PowerShell Event ID 4104: PASS
+PowerShell Script Block visible in Wazuh: PASS
+PCI-DSS explanation: PASS
+NIST SP 800-53 explanation: PASS
+
+=== WINDOWS RULES USED ===
+Sysmon/cmd.exe Wazuh rule: 92004
+PowerShell Script Block custom rule: 110071
+
+=== EVIDENCE FILES ===
+evidence/07-siem/01-siem-server-health.txt
+evidence/07-siem/02-linux-agent-fim.txt
+evidence/07-siem/03-linux-threat-hunting.txt
+evidence/07-siem/04-windows-sysmon-powershell.txt
+evidence/07-siem/05-regulatory-compliance.md

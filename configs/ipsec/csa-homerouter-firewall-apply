@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+CONFIG='/etc/nftables/csa-homerouter-firewall.nft'
+
+nft --check --file "$CONFIG"
+nft delete table inet csa_homerouter 2>/dev/null || true
+nft --file "$CONFIG"
+nft list table inet csa_homerouter

