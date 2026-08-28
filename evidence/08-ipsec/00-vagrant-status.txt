@@ -1,16 +1,16 @@
 ﻿Current machine states:
 
-companyrouter             poweroff (virtualbox)
-dns                       poweroff (virtualbox)
+companyrouter             running (virtualbox)
+dns                       running (virtualbox)
 web                       running (virtualbox)
 database                  poweroff (virtualbox)
-employee                  poweroff (virtualbox)
-isprouter                 poweroff (virtualbox)
-homerouter                poweroff (virtualbox)
-remote-employee           poweroff (virtualbox)
-siem                      running (virtualbox)
+employee                  running (virtualbox)
+isprouter                 running (virtualbox)
+homerouter                running (virtualbox)
+remote-employee           running (virtualbox)
+siem                      poweroff (virtualbox)
 lab7-linux                poweroff (virtualbox)
-lab7-windows              running (virtualbox)
+lab7-windows              poweroff (virtualbox)
 
 This environment represents multiple VMs. The VMs are all listed
 above with their current state. For more information about a specific

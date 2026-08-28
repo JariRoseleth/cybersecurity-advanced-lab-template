@@ -1,0 +1,5 @@
+ESP packets observed on fake-internet wire by red: 58
+Plaintext inter-site packets observed on fake-internet wire by red: 0
+Companyrouter local plaintext copies after XFRM decapsulation: 17
+MITM capture on red attempted: True
+Result: PASS

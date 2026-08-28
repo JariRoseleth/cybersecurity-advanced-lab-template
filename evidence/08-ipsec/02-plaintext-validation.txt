@@ -1,0 +1,2 @@
+Plaintext packets crossing companyrouter fake-internet interface: 32
+MITM capture on red attempted: True

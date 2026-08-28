@@ -1,0 +1,42 @@
+﻿Node: companyrouter
+Command: systemctl is-enabled csa-lab8-routing.service
+systemctl is-active csa-lab8-routing.service
+systemctl is-enabled csa-ipsec.service
+systemctl is-active csa-ipsec.service
+systemctl status csa-ipsec.service --no-pager
+ExitCode: 0
+
+enabled
+active
+enabled
+active
+ÔùÅ csa-ipsec.service - CSA Lab 8 manual site-to-site IPsec tunnel
+     Loaded: loaded (/etc/systemd/system/csa-ipsec.service; enabled; preset: disabled)
+     Active: active (exited) since Fri 2026-08-28 06:56:17 UTC; 3s ago
+    Process: 12335 ExecStart=/usr/local/sbin/csa-ipsec-apply (code=exited, status=0/SUCCESS)
+   Main PID: 12335 (code=exited, status=0/SUCCESS)
+        CPU: 34ms
+Node: homerouter
+Command: systemctl is-enabled csa-lab8-routing.service
+systemctl is-active csa-lab8-routing.service
+systemctl is-enabled csa-ipsec.service
+systemctl is-active csa-ipsec.service
+systemctl status csa-ipsec.service --no-pager
+ExitCode: 0
+
+enabled
+active
+enabled
+active
+ÔùÅ csa-ipsec.service - CSA Lab 8 manual site-to-site IPsec tunnel
+     Loaded: loaded (/etc/systemd/system/csa-ipsec.service; enabled; preset: disabled)
+     Active: active (exited) since Fri 2026-08-28 06:56:16 UTC; 3s ago
+    Process: 20522 ExecStart=/usr/local/sbin/csa-ipsec-apply (code=exited, status=0/SUCCESS)
+   Main PID: 20522 (code=exited, status=0/SUCCESS)
+        CPU: 35ms
+Node: homerouter
+Command: systemctl is-enabled csa-homerouter-firewall.service; systemctl is-active csa-homerouter-firewall.service
+ExitCode: 0
+
+enabled
+active

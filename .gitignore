@@ -15,3 +15,6 @@
 evidence/06-https/private/
 *.keylog
 sslkeys.log
+
+# CSA Lab 8 locally generated IPsec secrets
+configs/ipsec/ipsec.env

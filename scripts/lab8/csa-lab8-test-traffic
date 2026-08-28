@@ -3,9 +3,69 @@ set -Eeuo pipefail
 
 ROLE="${1:?Usage: csa-lab8-test-traffic remote|company|home}"
 
+retry_ping() {
+    local target="$1"
+    local source="${2:-}"
+
+    for attempt in 1 2 3 4 5; do
+        echo "--- ping attempt ${attempt}/5 -> ${target} ---"
+
+        if [[ -n "$source" ]]; then
+            if ping -I "$source" -c 3 -W 2 "$target"; then
+                return 0
+            fi
+        else
+            if ping -c 3 -W 2 "$target"; then
+                return 0
+            fi
+        fi
+
+        sleep 2
+    done
+
+    echo "PING FAILED after 5 attempts: ${target}" >&2
+    return 1
+}
+
+retry_http() {
+    local target="$1"
+
+    for attempt in 1 2 3 4 5; do
+        echo "--- HTTP attempt ${attempt}/5 -> ${target} ---"
+
+        if curl -fsSL \
+            --connect-timeout 4 \
+            --max-time 10 \
+            --output /dev/null \
+            --write-out 'HTTP status: %{http_code}\n' \
+            "http://${target}/"
+        then
+            return 0
+        fi
+
+        echo "--- HTTPS fallback ---"
+
+        if curl -kfsSL \
+            --connect-timeout 4 \
+            --max-time 10 \
+            --output /dev/null \
+            --write-out 'HTTPS status: %{http_code}\n' \
+            "https://${target}/"
+        then
+            return 0
+        fi
+
+        sleep 2
+    done
+
+    echo "HTTP/HTTPS FAILED after 5 attempts: ${target}" >&2
+    return 1
+}
+
 echo "=================================================="
 echo "CSA LAB 8 TRAFFIC TEST - ${ROLE}"
 echo "=================================================="
+
 date -Is
 hostname
 ip -br address
@@ -15,36 +75,31 @@ case "$ROLE" in
     remote)
         echo
         echo '=== REMOTE EMPLOYEE TO COMPANY WEB ==='
-        ping -c 3 -W 2 172.30.0.10
-        if ! curl -kfsSL \
-            --max-time 10 \
-            --output /dev/null \
-            --write-out 'HTTP final status: %{http_code}\n' \
-            http://172.30.0.10/
-        then
-            curl -kfsSL \
-                --max-time 10 \
-                --output /dev/null \
-                --write-out 'HTTPS final status: %{http_code}\n' \
-                https://172.30.0.10/
-        fi
+        retry_ping 172.30.0.10
+        retry_http 172.30.0.10
 
         echo
         echo '=== REMOTE EMPLOYEE TO COMPANY ROUTER ==='
-        ping -c 3 -W 2 172.30.255.254
+        retry_ping 172.30.255.254
         ;;
+
     company)
         echo
         echo '=== COMPANY ROUTER TO REMOTE EMPLOYEE ==='
-        ping -I 172.30.255.254 -c 3 -W 2 172.10.10.123
+        retry_ping 172.10.10.123 172.30.255.254
         ;;
+
     home)
         echo
         echo '=== HOME ROUTER TO COMPANY WEB ==='
-        ping -I 172.10.10.254 -c 3 -W 2 172.30.0.10
+        retry_ping 172.30.0.10 172.10.10.254
         ;;
+
     *)
         echo "Unsupported role: $ROLE" >&2
         exit 2
         ;;
 esac
+
+echo
+echo "TRAFFIC TEST PASSED: ${ROLE}"

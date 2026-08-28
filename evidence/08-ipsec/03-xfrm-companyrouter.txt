@@ -1,0 +1,65 @@
+Node: companyrouter
+Command: echo '=== XFRM STATES WITHOUT KEYS ==='
+sudo ip -s xfrm state list nokeys
+echo '=== XFRM POLICIES ==='
+sudo ip xfrm policy list
+echo '=== ROUTES ==='
+ip route
+ExitCode: 0
+
+=== XFRM STATES WITHOUT KEYS ===
+src 192.168.62.253 dst 192.168.62.42
+	proto esp spi 0x00008002(32770) reqid 8002(0x00001f42) mode tunnel
+	replay-window 0 seq 0x00000000 flag  (0x00000000)
+	auth-trunc hmac(sha256) <<Keys hidden>> 128
+	enc cbc(aes) <<Keys hidden>>
+	lastused 2026-08-28 06:56:06
+	anti-replay context: seq 0x0, oseq 0x23, bitmap 0x00000000
+	sel src 0.0.0.0/0 dst 0.0.0.0/0 uid 0
+	lifetime config:
+	  limit: soft (INF)(bytes), hard (INF)(bytes)
+	  limit: soft (INF)(packets), hard (INF)(packets)
+	  expire add: soft 0(sec), hard 0(sec)
+	  expire use: soft 0(sec), hard 0(sec)
+	lifetime current:
+	  5974(bytes), 35(packets)
+	  add 2026-08-28 06:51:26 use 2026-08-28 06:52:13
+	stats:
+	  replay-window 0 replay 0 failed 0
+src 192.168.62.42 dst 192.168.62.253
+	proto esp spi 0x00008001(32769) reqid 8001(0x00001f41) mode tunnel
+	replay-window 0 seq 0x00000000 flag  (0x00000000)
+	auth-trunc hmac(sha256) <<Keys hidden>> 128
+	enc cbc(aes) <<Keys hidden>>
+	lastused 2026-08-28 06:56:06
+	anti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000
+	sel src 0.0.0.0/0 dst 0.0.0.0/0 uid 0
+	lifetime config:
+	  limit: soft (INF)(bytes), hard (INF)(bytes)
+	  limit: soft (INF)(packets), hard (INF)(packets)
+	  expire add: soft 0(sec), hard 0(sec)
+	  expire use: soft 0(sec), hard 0(sec)
+	lifetime current:
+	  2910(bytes), 38(packets)
+	  add 2026-08-28 06:51:26 use 2026-08-28 06:52:13
+	stats:
+	  replay-window 0 replay 0 failed 0
+=== XFRM POLICIES ===
+src 172.30.0.0/16 dst 172.10.10.0/24 
+	dir out priority 100 ptype main 
+	tmpl src 192.168.62.253 dst 192.168.62.42
+		proto esp spi 0x00008002 reqid 8002 mode tunnel
+src 172.10.10.0/24 dst 172.30.0.0/16 
+	dir fwd priority 100 ptype main 
+	tmpl src 192.168.62.42 dst 192.168.62.253
+		proto esp spi 0x00008001 reqid 8001 mode tunnel
+src 172.10.10.0/24 dst 172.30.0.0/16 
+	dir in priority 100 ptype main 
+	tmpl src 192.168.62.42 dst 192.168.62.253
+		proto esp spi 0x00008001 reqid 8001 mode tunnel
+=== ROUTES ===
+default via 192.168.62.254 dev eth1 proto static metric 100 
+172.10.10.0/24 via 192.168.62.42 dev eth1 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.30.0.0/16 dev eth2 proto kernel scope link src 172.30.255.254 metric 101 
+192.168.62.0/24 dev eth1 proto kernel scope link src 192.168.62.253 metric 100

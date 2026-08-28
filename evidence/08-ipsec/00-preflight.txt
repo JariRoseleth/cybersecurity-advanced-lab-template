@@ -1,0 +1,122 @@
+﻿Node: companyrouter
+Command: echo '=== HOSTNAME ==='
+hostname
+echo '=== ADDRESSES ==='
+ip -br address
+echo '=== ROUTES ==='
+ip route
+echo '=== FORWARDING ==='
+sysctl net.ipv4.ip_forward 2>/dev/null || true
+echo '=== REQUIRED COMMANDS ==='
+for command_name in ip nft tcpdump systemctl curl ping; do
+    printf '%-12s ' "$command_name"
+    command -v "$command_name" 2>/dev/null || echo MISSING
+done
+echo '=== SUDO ==='
+sudo -n true && echo OK
+ExitCode: 0
+
+=== HOSTNAME ===
+companyrouter
+=== ADDRESSES ===
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             DOWN           
+eth1             UP             192.168.62.253/24 fe80::a00:27ff:fef8:7c23/64 
+eth2             UP             172.30.255.254/16 fe80::a00:27ff:fe16:729b/64 
+docker0          DOWN           172.17.0.1/16 
+=== ROUTES ===
+default via 192.168.62.254 dev eth1 proto static metric 100 
+172.10.10.0/24 via 192.168.62.42 dev eth1 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.30.0.0/16 dev eth2 proto kernel scope link src 172.30.255.254 metric 101 
+192.168.62.0/24 dev eth1 proto kernel scope link src 192.168.62.253 metric 100 
+=== FORWARDING ===
+net.ipv4.ip_forward = 1
+=== REQUIRED COMMANDS ===
+ip           /usr/sbin/ip
+nft          /usr/sbin/nft
+tcpdump      /usr/sbin/tcpdump
+systemctl    /usr/bin/systemctl
+curl         /usr/bin/curl
+ping         /usr/bin/ping
+=== SUDO ===
+OK
+Node: homerouter
+Command: echo '=== HOSTNAME ==='
+hostname
+echo '=== ADDRESSES ==='
+ip -br address
+echo '=== ROUTES ==='
+ip route
+echo '=== FORWARDING ==='
+sysctl net.ipv4.ip_forward 2>/dev/null || true
+echo '=== REQUIRED COMMANDS ==='
+for command_name in ip nft tcpdump systemctl curl ping; do
+    printf '%-12s ' "$command_name"
+    command -v "$command_name" 2>/dev/null || echo MISSING
+done
+echo '=== SUDO ==='
+sudo -n true && echo OK
+ExitCode: 0
+
+=== HOSTNAME ===
+homerouter
+=== ADDRESSES ===
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             DOWN           
+eth1             UP             192.168.62.42/24 fe80::a00:27ff:fe85:6046/64 
+eth2             UP             172.10.10.254/24 fe80::a00:27ff:fe93:f7ec/64 
+=== ROUTES ===
+default via 192.168.62.254 dev eth1 proto static metric 100 
+172.10.10.0/24 dev eth2 proto kernel scope link src 172.10.10.254 metric 101 
+172.30.0.0/16 via 192.168.62.253 dev eth1 
+192.168.62.0/24 dev eth1 proto kernel scope link src 192.168.62.42 metric 100 
+=== FORWARDING ===
+net.ipv4.ip_forward = 1
+=== REQUIRED COMMANDS ===
+ip           /usr/sbin/ip
+nft          /usr/sbin/nft
+tcpdump      /usr/sbin/tcpdump
+systemctl    /usr/bin/systemctl
+curl         /usr/bin/curl
+ping         /usr/bin/ping
+=== SUDO ===
+OK
+Node: remote-employee
+Command: echo '=== HOSTNAME ==='
+hostname
+echo '=== ADDRESSES ==='
+ip -br address
+echo '=== ROUTES ==='
+ip route
+echo '=== FORWARDING ==='
+sysctl net.ipv4.ip_forward 2>/dev/null || true
+echo '=== REQUIRED COMMANDS ==='
+for command_name in ip nft tcpdump systemctl curl ping; do
+    printf '%-12s ' "$command_name"
+    command -v "$command_name" 2>/dev/null || echo MISSING
+done
+echo '=== SUDO ==='
+sudo -n true && echo OK
+ExitCode: 0
+
+=== HOSTNAME ===
+remote-employee
+=== ADDRESSES ===
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             DOWN           
+eth1             UP             172.10.10.123/24 fe80::a00:27ff:fee8:6aa3/64 
+=== ROUTES ===
+default via 172.10.10.254 dev eth1 proto static metric 100 
+172.10.10.0/24 dev eth1 proto kernel scope link src 172.10.10.123 metric 100 
+=== FORWARDING ===
+net.ipv4.ip_forward = 0
+=== REQUIRED COMMANDS ===
+ip           /usr/sbin/ip
+nft          /usr/sbin/nft
+tcpdump      MISSING
+systemctl    /usr/bin/systemctl
+curl         /usr/bin/curl
+ping         /usr/bin/ping
+=== SUDO ===
+OK

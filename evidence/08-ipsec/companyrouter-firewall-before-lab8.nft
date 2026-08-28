@@ -16,15 +16,6 @@ table inet csa_firewall {
         type filter hook input priority filter; policy drop;
 
         ct state invalid drop
-        # BEGIN CSA LAB 8 IPSEC INPUT
-        # Only homerouter may send ESP to companyrouter.
-        ip saddr 192.168.62.42 ip daddr 192.168.62.253 ip protocol esp accept
-        ip protocol esp drop
-
-        # Accept home-to-company traffic only after successful IPsec processing.
-        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 ipsec in reqid 8001 accept
-        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 drop
-        # END CSA LAB 8 IPSEC INPUT
         ct state established,related accept
         iifname "lo" accept
 
@@ -46,15 +37,6 @@ table inet csa_firewall {
         type filter hook forward priority filter; policy drop;
 
         ct state invalid drop
-        # BEGIN CSA LAB 8 IPSEC FORWARD
-        # Home-to-company traffic must have arrived through reqid 8001.
-        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 ipsec in reqid 8001 accept
-        ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 drop
-
-        # Company-to-home traffic must leave through reqid 8002.
-        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 ipsec out reqid 8002 accept
-        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 drop
-        # END CSA LAB 8 IPSEC FORWARD
         ct state established,related accept
 
         # Internal clients may initiate connections towards the fake internet.
@@ -76,10 +58,5 @@ table inet csa_firewall {
 
     chain output {
         type filter hook output priority filter; policy accept;
-        # BEGIN CSA LAB 8 IPSEC OUTPUT
-        # Router-originated company-to-home traffic must also be encrypted.
-        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 ipsec out reqid 8002 accept
-        ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 drop
-        # END CSA LAB 8 IPSEC OUTPUT
     }
 }

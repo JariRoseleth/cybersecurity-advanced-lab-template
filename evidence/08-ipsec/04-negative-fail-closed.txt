@@ -1,0 +1,11 @@
+Node: homerouter
+Command: sudo systemctl stop csa-ipsec.service
+ExitCode: 0
+Node: remote-employee
+Command: ping -c 2 -W 2 172.30.0.10 >/dev/null 2>&1
+ExitCode: 1
+
+Node: remote-employee
+Command: ping -c 3 -W 2 172.30.0.10 >/dev/null && (curl -kfsSL --max-time 10 http://172.30.0.10/ >/dev/null || curl -kfsSL --max-time 10 https://172.30.0.10/ >/dev/null)
+ExitCode: 0
+

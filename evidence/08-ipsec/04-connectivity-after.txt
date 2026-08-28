@@ -1,0 +1,102 @@
+﻿Node: remote-employee
+Command: sudo /usr/local/sbin/csa-lab8-test-traffic remote
+ExitCode: 0
+
+==================================================
+CSA LAB 8 TRAFFIC TEST - remote
+==================================================
+2026-08-28T06:55:57+00:00
+remote-employee
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             DOWN           
+eth1             UP             172.10.10.123/24 fe80::a00:27ff:fee8:6aa3/64 
+default via 172.10.10.254 dev eth1 proto static metric 100 
+172.10.10.0/24 dev eth1 proto kernel scope link src 172.10.10.123 metric 100 
+
+=== REMOTE EMPLOYEE TO COMPANY WEB ===
+--- ping attempt 1/5 -> 172.30.0.10 ---
+PING 172.30.0.10 (172.30.0.10) 56(84) bytes of data.
+64 bytes from 172.30.0.10: icmp_seq=1 ttl=62 time=0.710 ms
+64 bytes from 172.30.0.10: icmp_seq=2 ttl=62 time=0.897 ms
+64 bytes from 172.30.0.10: icmp_seq=3 ttl=62 time=26.1 ms
+
+--- 172.30.0.10 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2028ms
+rtt min/avg/max/mdev = 0.710/9.230/26.084/11.917 ms
+--- HTTP attempt 1/5 -> 172.30.0.10 ---
+HTTP status: 200
+
+=== REMOTE EMPLOYEE TO COMPANY ROUTER ===
+--- ping attempt 1/5 -> 172.30.255.254 ---
+PING 172.30.255.254 (172.30.255.254) 56(84) bytes of data.
+64 bytes from 172.30.255.254: icmp_seq=1 ttl=63 time=19.2 ms
+64 bytes from 172.30.255.254: icmp_seq=2 ttl=63 time=18.5 ms
+64 bytes from 172.30.255.254: icmp_seq=3 ttl=63 time=27.4 ms
+
+--- 172.30.255.254 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2004ms
+rtt min/avg/max/mdev = 18.534/21.696/27.400/4.041 ms
+
+TRAFFIC TEST PASSED: remote
+Node: companyrouter
+Command: sudo /usr/local/sbin/csa-lab8-test-traffic company
+ExitCode: 0
+
+==================================================
+CSA LAB 8 TRAFFIC TEST - company
+==================================================
+2026-08-28T06:56:01+00:00
+companyrouter
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             DOWN           
+eth1             UP             192.168.62.253/24 fe80::a00:27ff:fef8:7c23/64 
+eth2             UP             172.30.255.254/16 fe80::a00:27ff:fe16:729b/64 
+docker0          DOWN           172.17.0.1/16 
+default via 192.168.62.254 dev eth1 proto static metric 100 
+172.10.10.0/24 via 192.168.62.42 dev eth1 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.30.0.0/16 dev eth2 proto kernel scope link src 172.30.255.254 metric 101 
+192.168.62.0/24 dev eth1 proto kernel scope link src 192.168.62.253 metric 100 
+
+=== COMPANY ROUTER TO REMOTE EMPLOYEE ===
+--- ping attempt 1/5 -> 172.10.10.123 ---
+PING 172.10.10.123 (172.10.10.123) from 172.30.255.254 : 56(84) bytes of data.
+64 bytes from 172.10.10.123: icmp_seq=1 ttl=63 time=21.3 ms
+64 bytes from 172.10.10.123: icmp_seq=2 ttl=63 time=30.2 ms
+64 bytes from 172.10.10.123: icmp_seq=3 ttl=63 time=10.9 ms
+
+--- 172.10.10.123 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2004ms
+rtt min/avg/max/mdev = 10.874/20.799/30.232/7.910 ms
+
+TRAFFIC TEST PASSED: company
+Node: homerouter
+Command: sudo /usr/local/sbin/csa-lab8-test-traffic home
+ExitCode: 0
+
+==================================================
+CSA LAB 8 TRAFFIC TEST - home
+==================================================
+2026-08-28T06:56:03+00:00
+homerouter
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             DOWN           
+eth1             UP             192.168.62.42/24 fe80::a00:27ff:fe85:6046/64 
+eth2             UP             172.10.10.254/24 fe80::a00:27ff:fe93:f7ec/64 
+default via 192.168.62.254 dev eth1 proto static metric 100 
+172.10.10.0/24 dev eth2 proto kernel scope link src 172.10.10.254 metric 101 
+172.30.0.0/16 via 192.168.62.253 dev eth1 
+192.168.62.0/24 dev eth1 proto kernel scope link src 192.168.62.42 metric 100 
+
+=== HOME ROUTER TO COMPANY WEB ===
+--- ping attempt 1/5 -> 172.30.0.10 ---
+PING 172.30.0.10 (172.30.0.10) from 172.10.10.254 : 56(84) bytes of data.
+64 bytes from 172.30.0.10: icmp_seq=1 ttl=63 time=10.5 ms
+64 bytes from 172.30.0.10: icmp_seq=2 ttl=63 time=20.1 ms
+64 bytes from 172.30.0.10: icmp_seq=3 ttl=63 time=26.9 ms
+
+--- 172.30.0.10 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2004ms
+rtt min/avg/max/mdev = 10.517/19.162/26.880/6.712 ms
+
+TRAFFIC TEST PASSED: home

@@ -59,13 +59,22 @@ function Invoke-Ssh {
         [switch]$AllowFailure
     )
 
-    $output = & ssh `
-        -o BatchMode=yes `
-        -o ConnectTimeout=12 `
-        $Node `
-        $Command 2>&1
+    $previousErrorActionPreference = $ErrorActionPreference
 
-    $exitCode = $LASTEXITCODE
+    try {
+        $ErrorActionPreference = 'Continue'
+
+        $output = & ssh `
+            -o BatchMode=yes `
+            -o ConnectTimeout=12 `
+            $Node `
+            $Command 2>&1
+
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
 
     if (-not $AllowFailure -and $exitCode -ne 0) {
         throw "SSH command failed on ${Node}:`n$($output -join "`n")"
@@ -553,8 +562,7 @@ function Invoke-Preflight {
     foreach ($node in @(
         'companyrouter',
         'homerouter',
-        'remote-employee',
-        'web'
+        'remote-employee'
     )) {
         $result = Invoke-Ssh `
             -Node $node `
@@ -660,7 +668,7 @@ MITM capture on red attempted: $mitmAvailable
         throw 'The baseline capture did not contain plaintext inter-site packets.'
     }
 
-    if (($traffic | Where-Object ExitCode -ne 0).Count -gt 0) {
+    if (@($traffic | Where-Object ExitCode -ne 0).Count -gt 0) {
         throw 'At least one baseline connectivity test failed.'
     }
 
@@ -815,19 +823,48 @@ function Invoke-Verify {
         -RemotePcap '/tmp/csa-lab8-05-esp-companyrouter.pcap' `
         -Filter 'net 172.10.10.0/24 and net 172.30.0.0/16'
 
-    if (($traffic | Where-Object ExitCode -ne 0).Count -gt 0) {
+    if (@($traffic | Where-Object ExitCode -ne 0).Count -gt 0) {
         throw 'At least one encrypted connectivity test failed.'
     }
     if ($espCount -lt 1) {
         throw 'The encrypted capture contains no ESP packets.'
     }
-    if ($plaintextCount -ne 0) {
-        throw "The encrypted capture still contains $plaintextCount plaintext inter-site packets."
+    # A tcpdump on companyrouter itself can see the inner packet again after
+    # inbound XFRM decapsulation. Therefore it is not a valid wire-level
+    # plaintext test. Use red as the independent observer on fake internet.
+    $companyLocalPlaintextCount = $plaintextCount
+
+    if (-not $mitmAvailable) {
+        throw 'Wire-level IPsec validation requires the red MITM capture.'
     }
 
+    $wireEspCount = Get-PcapCount `
+        -Node red `
+        -RemotePcap '/tmp/csa-lab8-05-esp-red.pcap' `
+        -Filter 'esp and host 192.168.62.42 and host 192.168.62.253'
+
+    $wirePlaintextCount = Get-PcapCount `
+        -Node red `
+        -RemotePcap '/tmp/csa-lab8-05-esp-red.pcap' `
+        -Filter 'net 172.10.10.0/24 and net 172.30.0.0/16'
+
+    if ($wireEspCount -lt 1) {
+        throw 'The external red capture contains no ESP packets.'
+    }
+
+    if ($wirePlaintextCount -ne 0) {
+        throw "The external red capture contains $wirePlaintextCount plaintext inter-site packets."
+    }
+
+    # From this point on the validation summary represents the actual wire,
+    # not companyrouter's post-decryption AF_PACKET view.
+    $espCount = $wireEspCount
+    $plaintextCount = $wirePlaintextCount
+
     $captureValidation = @"
-ESP packets on companyrouter fake-internet interface: $espCount
-Plaintext inter-site packets on companyrouter fake-internet interface: $plaintextCount
+ESP packets observed on fake-internet wire by red: $espCount
+Plaintext inter-site packets observed on fake-internet wire by red: $plaintextCount
+Companyrouter local plaintext copies after XFRM decapsulation: $companyLocalPlaintextCount
 MITM capture on red attempted: $mitmAvailable
 Result: PASS
 "@

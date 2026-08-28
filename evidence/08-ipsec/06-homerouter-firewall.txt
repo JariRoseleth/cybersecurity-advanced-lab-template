@@ -1,0 +1,38 @@
+Node: homerouter
+Command: sudo nft -a list table inet csa_homerouter
+ExitCode: 0
+
+table inet csa_homerouter { # handle 10
+	chain input { # handle 1
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop # handle 4
+		ip saddr 192.168.62.253 ip daddr 192.168.62.42 ip protocol esp accept # handle 5
+		ip protocol esp drop # handle 6
+		ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 ipsec in reqid 8002 accept # handle 7
+		ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 drop # handle 8
+		ct state established,related accept # handle 9
+		iifname "lo" accept # handle 10
+		ip saddr { 192.168.62.1, 192.168.62.254 } tcp dport 22 accept # handle 12
+		ip saddr { 192.168.62.1, 192.168.62.254 } ip protocol icmp accept # handle 14
+		ip saddr 172.10.10.0/24 accept # handle 15
+		counter packets 0 bytes 0 # handle 16
+	}
+
+	chain forward { # handle 2
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop # handle 17
+		ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 ipsec out reqid 8001 accept # handle 18
+		ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 drop # handle 19
+		ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 ipsec in reqid 8002 accept # handle 20
+		ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 drop # handle 21
+		ct state established,related accept # handle 22
+		ip saddr 172.10.10.0/24 accept # handle 23
+		counter packets 0 bytes 0 # handle 24
+	}
+
+	chain output { # handle 3
+		type filter hook output priority filter; policy accept;
+		ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 ipsec out reqid 8001 accept # handle 25
+		ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 drop # handle 26
+	}
+}

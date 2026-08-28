@@ -1,0 +1,25 @@
+Node: companyrouter
+Command: sudo nft -a list ruleset | grep -B1 -A1 'CSA-LAB8' || true
+ExitCode: 0
+
+# Warning: table ip nat is managed by iptables-nft, do not touch!
+# Warning: table ip filter is managed by iptables-nft, do not touch!
+# Warning: table ip6 nat is managed by iptables-nft, do not touch!
+		type filter hook input priority filter; policy drop;
+		ip saddr 192.168.62.42 ip daddr 192.168.62.253 ip protocol esp accept comment "CSA-LAB8-ESP-PEER-IN" # handle 63
+		ip protocol esp drop comment "CSA-LAB8-ESP-OTHER-IN-DROP" # handle 62
+		ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 ipsec in reqid 8001 accept comment "CSA-LAB8-IPSEC-H2C-IN" # handle 61
+		ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 drop comment "CSA-LAB8-PLAIN-H2C-IN-DROP" # handle 60
+		iifname "tun0" ip saddr 10.9.0.0/24 ip daddr 10.9.0.1 ip protocol icmp counter packets 10 bytes 840 accept comment "csa-lab9-openvpn-gateway-icmp" # handle 33
+--
+		type filter hook forward priority filter; policy drop;
+		ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 ipsec in reqid 8001 accept comment "CSA-LAB8-IPSEC-H2C-FWD" # handle 67
+		ip saddr 172.10.10.0/24 ip daddr 172.30.0.0/16 drop comment "CSA-LAB8-PLAIN-H2C-FWD-DROP" # handle 66
+		ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 ipsec out reqid 8002 accept comment "CSA-LAB8-IPSEC-C2H-FWD" # handle 65
+		ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 drop comment "CSA-LAB8-PLAIN-C2H-FWD-DROP" # handle 64
+		iifname "eth2" oifname "tun0" ip saddr 172.30.0.0/16 ip daddr 10.9.0.0/24 ct state established,related counter packets 56 bytes 7912 accept comment "csa-lab9-openvpn-forward-return" # handle 32
+--
+		type filter hook output priority filter; policy accept;
+		ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 ipsec out reqid 8002 accept comment "CSA-LAB8-IPSEC-C2H-OUT" # handle 69
+		ip saddr 172.30.0.0/16 ip daddr 172.10.10.0/24 drop comment "CSA-LAB8-PLAIN-C2H-OUT-DROP" # handle 68
+	}

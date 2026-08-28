@@ -1,13 +1,26 @@
-﻿ M Vagrantfile
- M ansible/inventory.yml
- M configs/ssh/client-config.example
-?? README-LAB8.md
-?? configs/honeypot/
-?? configs/ipsec/
-?? configs/wazuh/
-?? evidence/04-honeypot/
-?? evidence/07-siem/
-?? evidence/08-ipsec/
-?? evidence/09-openvpn/
-?? scripts/lab7/
-?? scripts/lab8/
+﻿ M .gitignore
+ M configs/firewall/companyrouter.nft
+ M evidence/08-ipsec/00-git-head-before.txt
+ M evidence/08-ipsec/00-git-status-before.txt
+ M evidence/08-ipsec/00-vagrant-status.txt
+ M evidence/08-ipsec/README.md
+ M scripts/lab8/Invoke-CSA-Lab8.ps1
+ M scripts/lab8/csa-lab8-test-traffic
+?? evidence/08-ipsec/00-preflight.txt
+?? evidence/08-ipsec/02-plaintext-companyrouter-summary.txt
+?? evidence/08-ipsec/02-plaintext-companyrouter.pcap
+?? evidence/08-ipsec/02-plaintext-connectivity.txt
+?? evidence/08-ipsec/02-plaintext-red-summary.txt
+?? evidence/08-ipsec/02-plaintext-validation.txt
+?? evidence/08-ipsec/04-connectivity-after.txt
+?? evidence/08-ipsec/05-esp-companyrouter-summary.txt
+?? evidence/08-ipsec/05-esp-companyrouter.pcap
+?? evidence/08-ipsec/05-esp-red-summary.txt
+?? evidence/08-ipsec/companyrouter-firewall-before-lab8.nft
+?? evidence/08-ipsec/csa-lab8-02-plaintext-red-ettercap.log
+?? evidence/08-ipsec/csa-lab8-02-plaintext-red-tcpdump.log
+?? evidence/08-ipsec/csa-lab8-02-plaintext-red.pcap
+?? evidence/08-ipsec/csa-lab8-05-esp-red-ettercap.log
+?? evidence/08-ipsec/csa-lab8-05-esp-red-tcpdump.log
+?? evidence/08-ipsec/csa-lab8-05-esp-red.pcap
+?? scripts/lab8/Invoke-CSA-Lab8.before-livefix.ps1

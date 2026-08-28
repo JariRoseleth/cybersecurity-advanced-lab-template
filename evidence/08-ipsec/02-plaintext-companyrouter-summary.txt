@@ -1,0 +1,43 @@
+Node: companyrouter
+Command: sudo tcpdump -nn -tttt -r '/tmp/csa-lab8-02-plaintext-companyrouter.pcap' 2>/dev/null
+ExitCode: 0
+
+2026-08-28 06:49:18.049383 IP 172.10.10.123 > 172.30.0.10: ICMP echo request, id 39, seq 1, length 64
+2026-08-28 06:49:18.049631 IP 172.30.0.10 > 172.10.10.123: ICMP echo reply, id 39, seq 1, length 64
+2026-08-28 06:49:18.495246 IP 192.168.62.42 > 192.168.62.253: ICMP echo request, id 32487, seq 32487, length 8
+2026-08-28 06:49:18.495248 ARP, Reply 192.168.62.42 is-at 08:00:27:62:10:10, length 46
+2026-08-28 06:49:18.495425 IP 192.168.62.42 > 192.168.62.253: ICMP echo reply, id 32487, seq 32487, length 8
+2026-08-28 06:49:19.105710 IP 172.10.10.123 > 172.30.0.10: ICMP echo request, id 39, seq 2, length 64
+2026-08-28 06:49:19.105947 IP 172.30.0.10 > 172.10.10.123: ICMP echo reply, id 39, seq 2, length 64
+2026-08-28 06:49:19.505036 ARP, Reply 192.168.62.42 is-at 08:00:27:62:10:10, length 46
+2026-08-28 06:49:20.131525 IP 172.10.10.123 > 172.30.0.10: ICMP echo request, id 39, seq 3, length 64
+2026-08-28 06:49:20.131749 IP 172.30.0.10 > 172.10.10.123: ICMP echo reply, id 39, seq 3, length 64
+2026-08-28 06:49:20.147411 IP 172.10.10.123.47472 > 172.30.0.10.80: Flags [S], seq 627524497, win 32120, options [mss 1460,sackOK,TS val 551475494 ecr 0,nop,wscale 7], length 0
+2026-08-28 06:49:20.147632 IP 172.30.0.10.80 > 172.10.10.123.47472: Flags [S.], seq 1466671511, ack 627524498, win 31856, options [mss 1460,sackOK,TS val 964641056 ecr 551475494,nop,wscale 7], length 0
+2026-08-28 06:49:20.163355 IP 172.10.10.123.47472 > 172.30.0.10.80: Flags [.], ack 1, win 251, options [nop,nop,TS val 551475504 ecr 964641056], length 0
+2026-08-28 06:49:20.163439 IP 172.10.10.123.47472 > 172.30.0.10.80: Flags [P.], seq 1:76, ack 1, win 251, options [nop,nop,TS val 551475504 ecr 964641056], length 75: HTTP: GET / HTTP/1.1
+2026-08-28 06:49:20.163598 IP 172.30.0.10.80 > 172.10.10.123.47472: Flags [.], ack 76, win 249, options [nop,nop,TS val 964641072 ecr 551475504], length 0
+2026-08-28 06:49:20.163881 IP 172.30.0.10.80 > 172.10.10.123.47472: Flags [P.], seq 1:1686, ack 76, win 249, options [nop,nop,TS val 964641072 ecr 551475504], length 1685: HTTP: HTTP/1.1 200 OK
+2026-08-28 06:49:20.179418 IP 172.10.10.123.47472 > 172.30.0.10.80: Flags [.], ack 1686, win 249, options [nop,nop,TS val 551475520 ecr 964641072], length 0
+2026-08-28 06:49:20.179537 IP 172.10.10.123.47472 > 172.30.0.10.80: Flags [F.], seq 76, ack 1686, win 249, options [nop,nop,TS val 551475521 ecr 964641072], length 0
+2026-08-28 06:49:20.179537 IP 172.10.10.123 > 172.30.255.254: ICMP echo request, id 40, seq 1, length 64
+2026-08-28 06:49:20.179602 IP 172.30.255.254 > 172.10.10.123: ICMP echo reply, id 40, seq 1, length 64
+2026-08-28 06:49:20.179799 IP 172.30.0.10.80 > 172.10.10.123.47472: Flags [F.], seq 1686, ack 77, win 249, options [nop,nop,TS val 964641088 ecr 551475521], length 0
+2026-08-28 06:49:20.195362 IP 172.10.10.123.47472 > 172.30.0.10.80: Flags [.], ack 1687, win 249, options [nop,nop,TS val 551475536 ecr 964641088], length 0
+2026-08-28 06:49:20.514738 ARP, Reply 192.168.62.42 is-at 08:00:27:62:10:10, length 46
+2026-08-28 06:49:21.179048 IP 172.10.10.123 > 172.30.255.254: ICMP echo request, id 40, seq 2, length 64
+2026-08-28 06:49:21.179084 IP 172.30.255.254 > 172.10.10.123: ICMP echo reply, id 40, seq 2, length 64
+2026-08-28 06:49:21.524449 ARP, Reply 192.168.62.42 is-at 08:00:27:62:10:10, length 46
+2026-08-28 06:49:22.178491 IP 172.10.10.123 > 172.30.255.254: ICMP echo request, id 40, seq 3, length 64
+2026-08-28 06:49:22.178520 IP 172.30.255.254 > 172.10.10.123: ICMP echo reply, id 40, seq 3, length 64
+2026-08-28 06:49:22.440805 IP 172.30.255.254 > 172.10.10.123: ICMP echo request, id 18, seq 1, length 64
+2026-08-28 06:49:22.450208 IP 172.10.10.123 > 172.30.255.254: ICMP echo reply, id 18, seq 1, length 64
+2026-08-28 06:49:22.534082 ARP, Reply 192.168.62.42 is-at 08:00:27:62:10:10, length 46
+2026-08-28 06:49:23.442625 IP 172.30.255.254 > 172.10.10.123: ICMP echo request, id 18, seq 2, length 64
+2026-08-28 06:49:23.457720 IP 172.10.10.123 > 172.30.255.254: ICMP echo reply, id 18, seq 2, length 64
+2026-08-28 06:49:24.444012 IP 172.30.255.254 > 172.10.10.123: ICMP echo request, id 18, seq 3, length 64
+2026-08-28 06:49:24.457259 IP 172.10.10.123 > 172.30.255.254: ICMP echo reply, id 18, seq 3, length 64
+2026-08-28 06:49:24.681299 IP 172.10.10.254 > 172.30.0.10: ICMP echo request, id 9, seq 1, length 64
+2026-08-28 06:49:24.681609 IP 172.30.0.10 > 172.10.10.254: ICMP echo reply, id 9, seq 1, length 64
+2026-08-28 06:49:25.680752 IP 172.10.10.254 > 172.30.0.10: ICMP echo request, id 9, seq 2, length 64
+2026-08-28 06:49:25.680983 IP 172.30.0.10 > 172.10.10.254: ICMP echo reply, id 9, seq 2, length 64
