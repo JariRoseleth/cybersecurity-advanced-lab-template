@@ -1,0 +1,38 @@
+﻿==================================================
+CSA LAB 9 - CLIENT PERSISTENCE
+==================================================
+active
+enabled
+
+tun0             UNKNOWN        10.9.0.2/24 fe80::e59c:b64a:66c2:4a0e/64 
+
+172.30.0.4 via 10.9.0.1 dev tun0 src 10.9.0.2 uid 1000 
+    cache 
+
+PING 172.30.0.4 (172.30.0.4) 56(84) bytes of data.
+64 bytes from 172.30.0.4: icmp_seq=1 ttl=63 time=25.2 ms
+64 bytes from 172.30.0.4: icmp_seq=2 ttl=63 time=32.0 ms
+64 bytes from 172.30.0.4: icmp_seq=3 ttl=63 time=23.0 ms
+64 bytes from 172.30.0.4: icmp_seq=4 ttl=63 time=110 ms
+
+--- 172.30.0.4 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3005ms
+rtt min/avg/max/mdev = 22.957/47.553/110.034/36.227 ms
+
+Aug 28 06:35:25 remote-employee openvpn[2947]: VERIFY OK: depth=0, CN=companyrouter
+Aug 28 06:35:25 remote-employee openvpn[2947]: [companyrouter] Peer Connection Initiated with [AF_INET]192.168.62.253:1194
+Aug 28 06:35:25 remote-employee openvpn[2947]: PUSH: Received control message: 'PUSH_REPLY,route 172.30.0.0 255.255.0.0,route-gateway 10.9.0.1,topology subnet,ping 10,ping-restart 60,ifconfig 10.9.0.2 255.255.255.0,peer-id 0,cipher AES-256-GCM'
+Aug 28 06:35:25 remote-employee openvpn[2947]: Data Channel: using negotiated cipher 'AES-256-GCM'
+Aug 28 06:35:25 remote-employee openvpn[2947]: Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:35:25 remote-employee openvpn[2947]: Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:35:25 remote-employee openvpn[2947]: Initialization Sequence Completed
+Aug 28 06:39:29 remote-employee openvpn[3283]: VERIFY OK: depth=1, CN=CSA-Lab9-CA
+Aug 28 06:39:29 remote-employee openvpn[3283]: VERIFY OK: depth=0, CN=companyrouter
+Aug 28 06:39:29 remote-employee openvpn[3283]: [companyrouter] Peer Connection Initiated with [AF_INET]192.168.62.253:1194
+Aug 28 06:39:29 remote-employee openvpn[3283]: PUSH: Received control message: 'PUSH_REPLY,route 172.30.0.0 255.255.0.0,route-gateway 10.9.0.1,topology subnet,ping 10,ping-restart 60,ifconfig 10.9.0.2 255.255.255.0,peer-id 0,cipher AES-256-GCM'
+Aug 28 06:39:29 remote-employee openvpn[3283]: Data Channel: using negotiated cipher 'AES-256-GCM'
+Aug 28 06:39:29 remote-employee openvpn[3283]: Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:39:29 remote-employee openvpn[3283]: Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:39:29 remote-employee openvpn[3283]: Initialization Sequence Completed
+
+CLIENT_PERSISTENCE_OK

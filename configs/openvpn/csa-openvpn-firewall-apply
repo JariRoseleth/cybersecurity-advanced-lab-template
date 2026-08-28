@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+TABLE='csa_firewall'
+
+nft list table inet "${TABLE}" >/dev/null
+nft list chain inet "${TABLE}" input >/dev/null
+nft list chain inet "${TABLE}" forward >/dev/null
+
+
+# OpenVPN listener: only remote-employee.
+if ! nft list chain inet "${TABLE}" input |
+     grep -q 'csa-lab9-openvpn-input'; then
+
+    nft insert rule inet "${TABLE}" input \
+        iifname "eth1" \
+        ip saddr 172.10.10.123 \
+        udp dport 1194 \
+        counter accept \
+        comment "csa-lab9-openvpn-input"
+fi
+
+
+# Allow VPN clients to reach/ping the VPN gateway itself.
+if ! nft list chain inet "${TABLE}" input |
+     grep -q 'csa-lab9-openvpn-gateway-icmp'; then
+
+    nft insert rule inet "${TABLE}" input \
+        iifname "tun0" \
+        ip saddr 10.9.0.0/24 \
+        ip daddr 10.9.0.1 \
+        ip protocol icmp \
+        counter accept \
+        comment "csa-lab9-openvpn-gateway-icmp"
+fi
+
+
+# VPN -> company LAN.
+if ! nft list chain inet "${TABLE}" forward |
+     grep -q 'csa-lab9-openvpn-forward-out'; then
+
+    nft insert rule inet "${TABLE}" forward \
+        iifname "tun0" \
+        oifname "eth2" \
+        ip saddr 10.9.0.0/24 \
+        ip daddr 172.30.0.0/16 \
+        counter accept \
+        comment "csa-lab9-openvpn-forward-out"
+fi
+
+
+# Company LAN -> established VPN traffic.
+if ! nft list chain inet "${TABLE}" forward |
+     grep -q 'csa-lab9-openvpn-forward-return'; then
+
+    nft insert rule inet "${TABLE}" forward \
+        iifname "eth2" \
+        oifname "tun0" \
+        ip saddr 172.30.0.0/16 \
+        ip daddr 10.9.0.0/24 \
+        ct state established,related \
+        counter accept \
+        comment "csa-lab9-openvpn-forward-return"
+fi
+
+echo "CSA_LAB9_FIREWALL_OK"

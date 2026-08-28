@@ -1,0 +1,54 @@
+﻿==================================================
+CSA LAB 9 - OPENVPN SERVER
+==================================================
+
+=== SERVICE ===
+active
+enabled
+
+=== INTERFACE ===
+tun0             UNKNOWN        10.9.0.1/24 fe80::6d4:f5d5:d245:b10c/64 
+
+=== ROUTING ===
+default via 192.168.62.254 dev eth1 proto static metric 100 
+10.9.0.0/24 dev tun0 proto kernel scope link src 10.9.0.1 
+172.10.10.0/24 via 192.168.62.42 dev eth1 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.30.0.0/16 dev eth2 proto kernel scope link src 172.30.255.254 metric 101 
+192.168.62.0/24 dev eth1 proto kernel scope link src 192.168.62.253 metric 100 
+
+=== LISTENER ===
+UNCONN 0      0            0.0.0.0:1194      0.0.0.0:*    users:(("openvpn",pid=6258,fd=5))                       
+
+=== LAB-9 FIREWALL ===
+		iifname "tun0" ip saddr 10.9.0.0/24 ip daddr 10.9.0.1 ip protocol icmp counter packets 7 bytes 588 accept comment "csa-lab9-openvpn-gateway-icmp" # handle 33
+		iifname "eth1" ip saddr 172.10.10.123 udp dport 1194 counter packets 188 bytes 27977 accept comment "csa-lab9-openvpn-input" # handle 30
+		iifname "eth2" oifname "tun0" ip saddr 172.30.0.0/16 ip daddr 10.9.0.0/24 ct state established,related counter packets 48 bytes 7240 accept comment "csa-lab9-openvpn-forward-return" # handle 32
+		iifname "tun0" oifname "eth2" ip saddr 10.9.0.0/24 ip daddr 172.30.0.0/16 counter packets 74 bytes 5610 accept comment "csa-lab9-openvpn-forward-out" # handle 31
+
+=== HANDSHAKE ===
+Aug 28 06:28:29 companyrouter openvpn[4725]: Initialization Sequence Completed
+Aug 28 06:28:38 companyrouter openvpn[4725]: 172.10.10.123:39656 VERIFY OK: depth=1, CN=CSA-Lab9-CA
+Aug 28 06:28:38 companyrouter openvpn[4725]: 172.10.10.123:39656 VERIFY OK: depth=0, CN=remote-employee
+Aug 28 06:28:38 companyrouter openvpn[4725]: 172.10.10.123:39656 peer info: IV_CIPHERS=AES-256-GCM:AES-128-GCM
+Aug 28 06:28:38 companyrouter openvpn[4725]: 172.10.10.123:39656 [remote-employee] Peer Connection Initiated with [AF_INET]172.10.10.123:39656
+Aug 28 06:28:38 companyrouter openvpn[4725]: remote-employee/172.10.10.123:39656 Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:28:38 companyrouter openvpn[4725]: remote-employee/172.10.10.123:39656 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:28:38 companyrouter openvpn[4725]: remote-employee/172.10.10.123:39656 SENT CONTROL [remote-employee]: 'PUSH_REPLY,route 172.30.0.0 255.255.0.0,route-gateway 10.9.0.1,topology subnet,ping 10,ping-restart 60,ifconfig 10.9.0.2 255.255.255.0,peer-id 0,cipher AES-256-GCM' (status=1)
+Aug 28 06:35:22 companyrouter openvpn[4725]: 172.10.10.123:51765 VERIFY OK: depth=1, CN=CSA-Lab9-CA
+Aug 28 06:35:22 companyrouter openvpn[4725]: 172.10.10.123:51765 VERIFY OK: depth=0, CN=remote-employee
+Aug 28 06:35:22 companyrouter openvpn[4725]: 172.10.10.123:51765 peer info: IV_CIPHERS=AES-256-GCM:AES-128-GCM
+Aug 28 06:35:22 companyrouter openvpn[4725]: 172.10.10.123:51765 [remote-employee] Peer Connection Initiated with [AF_INET]172.10.10.123:51765
+Aug 28 06:35:22 companyrouter openvpn[4725]: Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:35:22 companyrouter openvpn[4725]: Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:35:22 companyrouter openvpn[4725]: SENT CONTROL [remote-employee]: 'PUSH_REPLY,route 172.30.0.0 255.255.0.0,route-gateway 10.9.0.1,topology subnet,ping 10,ping-restart 60,ifconfig 10.9.0.2 255.255.255.0,peer-id 1,cipher AES-256-GCM' (status=1)
+Aug 28 06:35:22 companyrouter openvpn[6258]: Initialization Sequence Completed
+Aug 28 06:35:25 companyrouter openvpn[6258]: 172.10.10.123:41724 VERIFY OK: depth=1, CN=CSA-Lab9-CA
+Aug 28 06:35:25 companyrouter openvpn[6258]: 172.10.10.123:41724 VERIFY OK: depth=0, CN=remote-employee
+Aug 28 06:35:25 companyrouter openvpn[6258]: 172.10.10.123:41724 peer info: IV_CIPHERS=AES-256-GCM:AES-128-GCM
+Aug 28 06:35:25 companyrouter openvpn[6258]: 172.10.10.123:41724 [remote-employee] Peer Connection Initiated with [AF_INET]172.10.10.123:41724
+Aug 28 06:35:25 companyrouter openvpn[6258]: remote-employee/172.10.10.123:41724 Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:35:25 companyrouter openvpn[6258]: remote-employee/172.10.10.123:41724 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Aug 28 06:35:25 companyrouter openvpn[6258]: remote-employee/172.10.10.123:41724 SENT CONTROL [remote-employee]: 'PUSH_REPLY,route 172.30.0.0 255.255.0.0,route-gateway 10.9.0.1,topology subnet,ping 10,ping-restart 60,ifconfig 10.9.0.2 255.255.255.0,peer-id 0,cipher AES-256-GCM' (status=1)
+
+SERVER_VALIDATION_OK

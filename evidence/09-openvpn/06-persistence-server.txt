@@ -1,0 +1,33 @@
+﻿==================================================
+CSA LAB 9 - SERVER PERSISTENCE
+==================================================
+
+=== OPENVPN ===
+active
+enabled
+
+=== FIREWALL INTEGRATION ===
+active
+enabled
+
+=== TUN0 ===
+tun0             UNKNOWN        10.9.0.1/24 fe80::ed0a:872c:2c81:6e55/64 
+
+=== UDP 1194 ===
+UNCONN 0      0            0.0.0.0:1194      0.0.0.0:*    users:(("openvpn",pid=7436,fd=5))                       
+
+=== SYSTEMD DROP-INS ===
+[Service]
+ExecStartPost=/usr/local/sbin/csa-openvpn-firewall-apply
+
+[Unit]
+Wants=csa-openvpn-firewall.service
+After=csa-openvpn-firewall.service
+
+=== LAB-9 RULES ===
+		iifname "tun0" ip saddr 10.9.0.0/24 ip daddr 10.9.0.1 ip protocol icmp counter packets 10 bytes 840 accept comment "csa-lab9-openvpn-gateway-icmp" # handle 33
+		iifname "eth1" ip saddr 172.10.10.123 udp dport 1194 counter packets 221 bytes 34618 accept comment "csa-lab9-openvpn-input" # handle 30
+		iifname "eth2" oifname "tun0" ip saddr 172.30.0.0/16 ip daddr 10.9.0.0/24 ct state established,related counter packets 56 bytes 7912 accept comment "csa-lab9-openvpn-forward-return" # handle 32
+		iifname "tun0" oifname "eth2" ip saddr 10.9.0.0/24 ip daddr 172.30.0.0/16 counter packets 82 bytes 6282 accept comment "csa-lab9-openvpn-forward-out" # handle 31
+
+SERVER_PERSISTENCE_OK
