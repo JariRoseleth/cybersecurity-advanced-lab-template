@@ -93,8 +93,14 @@ zichtbaar tussen:
 
     10.9.0.2 <-> 172.30.0.4
 
-De interne VPN-adressen en het interne doeladres zijn niet in plaintext
-zichtbaar op `eth1`.
+De gegenereerde VPN-testflow (`10.9.0.2 <-> 172.30.0.4` via ICMP) is
+niet in plaintext zichtbaar op `eth1`; daar verschijnt die sessie als
+OpenVPN UDP/1194.
+
+De outer capture bevat daarnaast enkele onafhankelijke NTP-pakketten van
+`172.30.0.4` naar publieke NTP-servers. Dat is normaal bedrijfsverkeer dat
+ook via `companyrouter` wordt gerouteerd en staat los van de gedecrypteerde
+VPN-testflow.
 
 ## Persistence
 

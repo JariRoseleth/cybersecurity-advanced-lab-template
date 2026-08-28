@@ -1,4 +1,4 @@
-﻿==================================================
+==================================================
 CSA LAB 9 - OPENVPN CLIENT
 ==================================================
 
@@ -7,16 +7,16 @@ active
 enabled
 
 === INTERFACE ===
-tun0             UNKNOWN        10.9.0.2/24 fe80::987d:c127:c9f0:c785/64 
+tun0             UNKNOWN        10.9.0.2/24 fe80::987d:c127:c9f0:c785/64
 
 === ROUTES ===
-default via 172.10.10.254 dev eth1 proto static metric 100 
-10.9.0.0/24 dev tun0 proto kernel scope link src 10.9.0.2 
-172.10.10.0/24 dev eth1 proto kernel scope link src 172.10.10.123 metric 100 
-172.30.0.0/16 via 10.9.0.1 dev tun0 
+default via 172.10.10.254 dev eth1 proto static metric 100
+10.9.0.0/24 dev tun0 proto kernel scope link src 10.9.0.2
+172.10.10.0/24 dev eth1 proto kernel scope link src 172.10.10.123 metric 100
+172.30.0.0/16 via 10.9.0.1 dev tun0
 
-172.30.0.4 via 10.9.0.1 dev tun0 src 10.9.0.2 uid 1000 
-    cache 
+172.30.0.4 via 10.9.0.1 dev tun0 src 10.9.0.2 uid 1000
+    cache
 
 === VPN GATEWAY ===
 PING 10.9.0.1 (10.9.0.1) 56(84) bytes of data.

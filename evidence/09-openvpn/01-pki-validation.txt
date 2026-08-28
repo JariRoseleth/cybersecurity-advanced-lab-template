@@ -1,5 +1,33 @@
-﻿==================================================
+==================================================
 CSA LAB 9 - PKI VALIDATION
 ==================================================
 
 === CA ===
+subject=CN = CSA-Lab9-CA
+issuer=CN = CSA-Lab9-CA
+notBefore=Aug 28 06:21:06 2026 GMT
+notAfter=Aug 25 06:21:06 2036 GMT
+
+=== SERVER CERTIFICATE ===
+subject=CN = companyrouter
+issuer=CN = CSA-Lab9-CA
+notBefore=Aug 28 06:21:07 2026 GMT
+notAfter=Nov 30 06:21:07 2028 GMT
+X509v3 Extended Key Usage:
+    TLS Web Server Authentication
+
+=== CLIENT CERTIFICATE ===
+subject=CN = remote-employee
+issuer=CN = CSA-Lab9-CA
+notBefore=Aug 28 06:21:07 2026 GMT
+notAfter=Nov 30 06:21:07 2028 GMT
+X509v3 Extended Key Usage:
+    TLS Web Client Authentication
+
+=== VERIFY SERVER ===
+/etc/openvpn/easy-rsa/pki/issued/companyrouter.crt: OK
+
+=== VERIFY CLIENT ===
+/etc/openvpn/easy-rsa/pki/issued/remote-employee.crt: OK
+
+PKI_VALIDATION_OK
